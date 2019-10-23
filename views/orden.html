@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .btn-multiple{
+            height: 50px;
+        }
+
+        #final-bill{
+            font-size: 1.3em;
+        }
+    </style>
+  </head>
+  <body>
+      <section class="container">
+          <h2 class="text-center">Orden Mesa # <strong>1</strong></h2>
+          <div class="d-flex justify-content-md-center align-items-md-center" id="table-content">
+                <table class="table table-striped col-12 col-md-12">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">nombre</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">importe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Chilaquiles</td>
+                            <td>$30</td>
+                            <td>$30</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jugo</td>
+                            <td>$15</td>
+                            <td>$30</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>taco</td>
+                            <td>$10</td>
+                            <td>$30</td>
+                        </tr>
+                    </tbody>
+                </table>
+          </div>
+
+          <article>
+              <form action="">
+                <small>propina</small>
+                <div class="row d-fex align-items-md-center">
+                    <div class="input-group-prepend col-md-6 col-12" id="button-addon3">
+                        <button class="btn-multiple btn btn-outline-secondary col-6" type="button">$</button>
+                        <button class="btn-multiple btn btn-outline-secondary col-6" type="button">%</button>
+                    </div>
+                    <div class="input-group mb-3 mt-3 col-12 col-md-6">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        <div class="input-group-append">
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <p id="final-bill" class="col-md-5 col-12">Total: $90</p>
+                    <button class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
+                </div>
+                
+              </form>
+              
+
+          </article>
+          
+      </section>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
