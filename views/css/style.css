@@ -1,6 +1,21 @@
+*{
+    font-family: 'Montserrat';
+}
 #imgPlatillo{
     height: 300px;
     background-image: url('../img/TacosTripa.jpg');
-    /*background-repeat: no-repeat;*/
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+#imgProducto{
+    height: 300px;
+    background-image: url('../img/cocaCola.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+#imgAdd{
+    float: left;
 }
 
