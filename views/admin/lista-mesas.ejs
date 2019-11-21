@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-
+        <%- include('../navbar'); %>
         <section class="container">
             <div class="input-group input-group-sm mb-3 mt-3 col-12">
                 <div class="input-group-prepend">
@@ -19,21 +19,21 @@
                 <input type="text" class="form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-sm">
             </div>
-            <h2 class="text-center">Productos</h2>
+            <h2 class="text-center">Mesas</h2>
             <div class="d-flex justify-content-md-center align-items-md-center" id="table-content">
                 <table class="table table-striped col-12 col-md-12">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">nombre</th>
-                            <th scope="col">cantidad</th>
+                            <th scope="col">Ubicacion</th>
+                            <th scope="col">Sillas</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row">1</th>
-                            <td>coca cola</td>
+                            <td>segundo piso</td>
                             <td>5</td>
                             <td>
                                 <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
@@ -42,7 +42,7 @@
                         </tr>
                         <tr>
                             <th scope="row">2</th>
-                            <td>fanta</td>
+                            <td>entrada</td>
                             <td>5</td>
                             <td>
                                 <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <th scope="row">3</th>
-                            <td>pan</td>
+                            <td>a un lado del baño</td>
                             <td>3</td>
                             <td>
                                 <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
