@@ -10,8 +10,9 @@ Es un pequeño proyecto de un mini sistema para un restaurante
 
 ### Dependencies
 
-* MongoDb
-* Nodejs
+
+* [MongoDb](https://www.mongodb.com)
+* [NodeJs](https://nodejs.org)
 
 ### Installing
 
