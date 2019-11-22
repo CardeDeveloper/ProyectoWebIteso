@@ -15,13 +15,24 @@ Es un pqueño proyecto de un mini sistema para un restaurante
 
 ### Installing
 
-* Git clone ...
-* npm i
+* Clone repo
+```
+git clone https://github.com/CardeDeveloper/ProyectoWebIteso.git
+```
+* Install Dependencies
+```
+npm i
+```
+### Executing program in development mode
+
+*  Run the command in the terminal
+```
+npm run dev
+```
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+* Run the command in the terminal
 ```
 npm start
 ```
@@ -36,6 +47,8 @@ Contributors names and contact info
 
 ## Version History
 
+* 0.3
+    * Backend added
 * 0.2
     * Various bug fixes and optimizations
     * See [commit change]() or See [release history]()
