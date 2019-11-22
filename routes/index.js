@@ -54,11 +54,11 @@ router.get('/admin/platillos', function(req, res, next) {
   res.render('admin/lista-platillos');
 });
 router.get('/admin/platillos/editar', function(req, res, next) {
-  res.render('admin/platillog-editar');
+  res.render('admin/platillo-editar');
 });
 
 router.get('/admin/platillos/nuevo', function(req, res, next) {
-  res.render('admin/platillog');
+  res.render('admin/platillo');
 });
 
 router.get('/orden', function(req, res, next) {
@@ -76,6 +76,8 @@ router.get('/mesa/nueva', function(req, res, next) {
 router.get('/platillo', function(req, res, next) {
   res.render('platillosVistaIndividual');
 });
+
+
 
 router.get('/ingrediente', function(req, res, next) {
   res.render('admin/agregarIngrediente');
