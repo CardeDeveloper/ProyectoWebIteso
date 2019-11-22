@@ -31,8 +31,9 @@ router.post('/', function(req, res, next) {
     try{
     dishModel.create({
        name: req.body.name, 
-       unit: req.body.unit, 
-       quantity: req.body.quantity
+       ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients),
+       price:req.body.price
+
        
      }, (err, result)=>{
       console.log("llego")
@@ -50,8 +51,8 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next){
   dishModel.findOneAndUpdate(req.params.id, {
       name: req.body.name, 
-      unit: req.body.unit, 
-      quantity: req.body.quantity
+      price:req.body.price,
+      ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients)
     }, function(err, dishInfo){
       if(err)
         next(err);

@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
     try{
     tableModel.create({
        number: req.body.number, 
-       references: req.body.references, 
+       reference: req.body.reference, 
        seats: req.body.seats
        
      }, (err, result)=>{
@@ -50,7 +50,7 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next){
   tableModel.findOneAndUpdate(req.params.id, {
         number: req.body.number, 
-        references: req.body.references, 
+        reference: req.body.reference, 
         seats: req.body.seats
     }, function(err, tableInfo){
       if(err)

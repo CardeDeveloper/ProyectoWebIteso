@@ -13,6 +13,7 @@ var Schema = mongoose.Schema
 
     },
     is_active:{type:Boolean, default:true},
+    clients: {type:Number, default:1},
     created_at: { type: Date, default: Date.now },
   });
 

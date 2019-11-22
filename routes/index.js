@@ -77,6 +77,10 @@ router.get('/platillo', function(req, res, next) {
   res.render('platillosVistaIndividual');
 });
 
+router.get('/producto', function(req, res, next) {
+  res.render('productoVistaIndividual');
+});
+
 
 
 router.get('/ingrediente', function(req, res, next) {
