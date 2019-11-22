@@ -13,6 +13,19 @@ router.get('/:id', function(req, res, next) {
     });
     
   });
+
+  //obtener orden por mesa
+  router.get('/table/:id', function(req, res, next) {
+    orderModel.findOne({table:req.params.id}, function(err, order){
+   
+      if(err){
+        next(err)
+      }else{
+        res.json({ status: 'success' , data : {order: order}});
+      }
+    });
+    
+  });
 /* GET orders listing. */
 router.get('/', function(req, res, next) {
   orderModel.find({}, function(err, orders){
@@ -33,7 +46,8 @@ router.post('/', function(req, res, next) {
        table: req.body.table, 
        products: req.body.products, 
        dishes: req.body.dishes,
-       total:req.body.total
+       total:req.body.total,
+       clients: req.body.clients
        
      }, (err, result)=>{
       console.log("llego")
@@ -51,9 +65,23 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next){
   orderModel.findOneAndUpdate(req.params.id, {
         table: req.body.table, 
-        products: req.body.products, 
-        dishes: req.body.dishes,
-        total:req.body.total
+        products: req.body.products== undefined ? []:JSON.parse(req.body.products), 
+        dishes: req.body.dishes== undefined ? []:JSON.parse(req.body.dishes),
+        total:req.body.total,
+        clients: req.body.clients
+    }, function(err, orderInfo){
+      if(err)
+        next(err);
+      else{
+        res.json({status:"success", message: "order updated successfully", data: orderInfo});
+      }
+  });
+});
+
+//cerrar orden
+router.put('/:id/paid', function(req, res, next){
+  orderModel.findOneAndUpdate(req.params.id, {
+        is_active:false
     }, function(err, orderInfo){
       if(err)
         next(err);
