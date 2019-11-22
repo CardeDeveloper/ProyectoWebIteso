@@ -4,14 +4,15 @@ Proyecto para la materia de Desarrollo de servicios y aplicaciones web ITESO Oto
 
 ## Descripcion
 
-Es un pqueño proyecto de un mini sistema para un restaurante
+Es un pequeño proyecto de un mini sistema para un restaurante
 
 ## Getting Started
 
 ### Dependencies
 
-* MongoDb
-* Nodejs
+
+* [MongoDb](https://www.mongodb.com)
+* [NodeJs](https://nodejs.org)
 
 ### Installing
 
