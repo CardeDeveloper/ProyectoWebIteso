@@ -278,7 +278,14 @@
 
         
 
-        fetch('http://localhost:3000/api/products')
+        fetch('http://localhost:3000/api/products',{
+                    method: 'GET', 
+                    //body: JSON.stringify(data), // data can be `string` or {object}!
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'x-access-token': sessionStorage.getItem("token")
+                    }
+                })
             .then(function(response) {
                 return response.text();
             })
