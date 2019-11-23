@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const ingredientModel = require('../models/ingredient');
+const middlewares = require('../middlewares')
+
+router.use(middlewares.validateUser)
 
 router.get('/:id', function(req, res, next) {
     ingredientModel.findOne({_id:req.params.id}, function(err, ingredient){

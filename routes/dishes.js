@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const dishModel = require('../models/dish');
+const middlewares = require('../middlewares')
+
+router.use(middlewares.validateUser)
 
 router.get('/:id', function(req, res, next) {
     dishModel.findOne({_id:req.params.id}, function(err, dish){
@@ -32,7 +35,8 @@ router.post('/', function(req, res, next) {
     dishModel.create({
        name: req.body.name, 
        ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients),
-       price:req.body.price
+       price:req.body.price,
+       image: req.body.image
 
        
      }, (err, result)=>{
@@ -52,6 +56,7 @@ router.put('/:id', function(req, res, next){
   dishModel.findOneAndUpdate(req.params.id, {
       name: req.body.name, 
       price:req.body.price,
+      image: req.body.image,
       ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients)
     }, function(err, dishInfo){
       if(err)

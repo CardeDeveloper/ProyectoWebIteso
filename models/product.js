@@ -8,6 +8,7 @@ var Schema = mongoose.Schema
     unit:{type:String , required: true},
     quantity:{type: Number, default:0},
     price: {type: Number, required:true},
+    image:{type:String},
     created_at: { type: Date, default: Date.now },
   });
 

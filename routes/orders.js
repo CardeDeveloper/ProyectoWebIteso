@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const orderModel = require('../models/order');
+const middlewares = require('../middlewares')
+
+router.use(middlewares.validateUser)
 
 router.get('/:id', function(req, res, next) {
     orderModel.findOne({_id:req.params.id}, function(err, order){
@@ -16,7 +19,7 @@ router.get('/:id', function(req, res, next) {
 
   //obtener orden por mesa
   router.get('/table/:id', function(req, res, next) {
-    orderModel.findOne({table:req.params.id}, function(err, order){
+    orderModel.findOne({table:req.params.id}).populate('table').exec( function(err, order){
    
       if(err){
         next(err)
@@ -68,7 +71,8 @@ router.put('/:id', function(req, res, next){
         products: req.body.products== undefined ? []:JSON.parse(req.body.products), 
         dishes: req.body.dishes== undefined ? []:JSON.parse(req.body.dishes),
         total:req.body.total,
-        clients: req.body.clients
+        clients: req.body.clients,
+        tip:req.body.tip
     }, function(err, orderInfo){
       if(err)
         next(err);

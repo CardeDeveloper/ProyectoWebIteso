@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const tableModel = require('../models/table');
+const middlewares = require('../middlewares')
+
+router.use(middlewares.validateUser)
 
 router.get('/:id', function(req, res, next) {
     tableModel.findOne({_id:req.params.id}, function(err, table){
