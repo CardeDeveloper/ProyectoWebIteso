@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
   <head>
-    <title>Title</title>
+    <title>orden</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,7 +21,7 @@
   <body>
         <%- include('navbar'); %>
       <section class="container">
-          <h2 class="text-center">Orden Mesa # <strong>1</strong></h2>
+          <h2 class="text-center">Orden Mesa </h2>
           <div class="d-flex justify-content-md-center align-items-md-center" id="table-content">
                 <table class="table table-striped col-12 col-md-12">
                     <thead>
@@ -32,7 +32,7 @@
                             <th scope="col">importe</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="list-items">
                         <tr>
                             <th scope="row">1</th>
                             <td>Chilaquiles</td>
@@ -67,13 +67,28 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">$</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                        <div class="input-group-append">
+                        <input id="txtTip" value="0" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        <!--<div class="input-group-append">
                             <span class="input-group-text">.00</span>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
                 <div class="row mt-4">
+                    <select class="form-control col-12 col-md-2 mr-1" name="type" id="item-type">
+                        <option value="platillo">platillo</option>
+                        <option value="producto">producto</option>
+                    </select>
+                    <select class="form-control col-12 col-md-4 mr-1" name="type" id="item-type">
+                            <option value="platillo">chiles</option>
+                            <option value="producto">producto</option>
+                    </select>
+                    <input class="form-control col-12 col-md-2 mr-1" type="number" min="1" placeholder="cantidad">
+                    <button class="btn btn-info col-12 col-md-2">añadir</button>
+
+                </div>
+                <div class="row mt-4">
+                    <p id="subtotal" class="col-12">subtotal: $90</p>
+                    <p id="tip" class="col-12">propina: $90</p>
                     <p id="final-bill" class="col-md-5 col-12">Total: $90</p>
                     <button class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
                 </div>
@@ -90,5 +105,58 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
+    <script>
+        function getSearchParameters() {
+            var prmstr = window.location.search.substr(1);
+            return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+        }
+
+        function transformToAssocArray( prmstr ) {
+        var params = {};
+        var prmarr = prmstr.split("&");
+        for ( var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+        }
+        let tip= 0
+        let total = 0 
+        let subtotal = 0;
+        var params = getSearchParameters();
+        let subtotal_dom = document.getElementById("subtotal")
+        let propina_dom = document.getElementById("tip")
+        let total_dom = document.getElementById("final-bill")
+        let txtTip = document.getElementById("txtTip")
+        let list_items = document.getElementById("list-items")
+
+        fetch('/api/orders/' + params.id,
+                {
+                    method: 'GET', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    }
+                }).then(obj => obj.json())
+                .then((json) => json.data.order)
+                .then(order => {
+                    tip= order.tip
+                    subtotal = order.total
+                    total = subtotal +tip
+                    txtTip.value = tip
+                    updateValues()
+                    
+
+                })
+
+                function updateValues(){
+                    propina_dom.innerText = "Propina: $" + tip
+                    subtotal_dom.innerText = "Subtotal: $" + subtotal
+                    total_dom.innerText = "Total: $" + total
+                }
+
+
+    </script>
+
+</body>
 </html>
