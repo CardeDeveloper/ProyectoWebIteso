@@ -12,7 +12,8 @@ router.get('/:id', function(req, res, next) {
       }
     });
     
-  });
+});
+
 /* GET products listing. */
 router.get('/', function(req, res, next) {
   productModel.find({}, function(err, products){

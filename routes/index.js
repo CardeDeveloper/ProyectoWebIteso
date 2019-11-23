@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
 router.get('/admin/mesas', function(req, res, next) {
   res.render('admin/lista-mesas');
 });
+
 router.get('/admin/mesas/editar', function(req, res, next) {
   res.render('admin/mesa-editar');
 });
