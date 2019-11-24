@@ -62,6 +62,17 @@ router.get('/admin/platillos/nuevo', function(req, res, next) {
   res.render('admin/platillo');
 });
 
+router.get('/admin/usuarios', function(req, res, next) {
+  res.render('admin/usuarios');
+});
+router.get('/admin/platillos/editar', function(req, res, next) {
+  res.render('admin/EditarUsuario');
+});
+
+router.get('/admin/platillos/nuevo', function(req, res, next) {
+  res.render('admin/AgregarUsuario');
+});
+
 router.get('/orden', function(req, res, next) {
   res.render('orden');
 });
