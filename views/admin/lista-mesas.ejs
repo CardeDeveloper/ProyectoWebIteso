@@ -16,7 +16,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Sizing example input"
+                    <input id="search" type="text" class="form-control" aria-label="Sizing example input"
                         aria-describedby="inputGroup-sizing-sm">
                 </div>
                 <div class="row">
@@ -82,9 +82,34 @@
 
     <script>
         var mesas = [];
+
+        var mesasBackUp = [];
+
         var tablaTables = [];
         var current_page = 0
         var records_per_page = 2;
+
+        var search = document.getElementById("search");
+
+        search.onkeyup = filtrado;
+
+        function filtrado(event){
+            console.log(search.value);
+            mesas = mesasBackUp.filter((mesa) => {
+                return mesa.reference.toUpperCase().trim().includes(search.value.toUpperCase().trim());
+            })
+            if(search.value == ""){
+                cargarMesas(mesas);
+                loadPagination();
+                changePage(1);
+            }else{
+                loadPagination();
+                changePage(1);
+
+                loadHtml(mesas);
+            }
+            
+        }
 
         //var btn_next = document.getElementById("btn_next");
         //var btn_prev = document.getElementById("btn_prev");
@@ -292,6 +317,7 @@
             .then(function(data) {
             console.log('data = ', data);
             mesas = JSON.parse(data).data.tables;
+            mesasBackUp = mesas;
             console.log("arreglo de mesas",mesas);
             //console.log("--------");
 
