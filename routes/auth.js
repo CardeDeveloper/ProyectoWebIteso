@@ -14,7 +14,7 @@ router.post('/', function(req,res,next){
                 next(err);
             }
             if(bcrypt.compareSync(req.body.password, userInfo.password)){
-                const token = jwt.sign({id: userInfo._id, type: userInfo.type}, req.app.get('secretKey'), {expiresIn: '1h'});
+                const token = jwt.sign({id: userInfo._id, type: userInfo.type}, req.app.get('secretKey'), {expiresIn: '10h'});
                 res.json({status: "succes", message: "user found!!", data: {user: userInfo, token:token}});
             }else{
                 res.status(401).json({status: "error", message: "Invalid email/password", data: null});

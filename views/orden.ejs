@@ -33,24 +33,7 @@
                         </tr>
                     </thead>
                     <tbody id="list-items">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Chilaquiles</td>
-                            <td>$30</td>
-                            <td>$30</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jugo</td>
-                            <td>$15</td>
-                            <td>$30</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>taco</td>
-                            <td>$10</td>
-                            <td>$30</td>
-                        </tr>
+                        
                     </tbody>
                 </table>
           </div>
@@ -60,12 +43,12 @@
                 <small>propina</small>
                 <div class="row d-fex align-items-md-center">
                     <div class="input-group-prepend col-md-6 col-12" id="button-addon3">
-                        <button class="btn-multiple btn btn-outline-secondary col-6" type="button">$</button>
-                        <button class="btn-multiple btn btn-outline-secondary col-6" type="button">%</button>
+                        <button onclick="ChangeType('$')" class="btn-multiple btn btn-outline-secondary col-6" type="button">$</button>
+                        <button onclick="ChangeType('%')" class="btn-multiple btn btn-outline-secondary col-6" type="button">%</button>
                     </div>
                     <div class="input-group mb-3 mt-3 col-12 col-md-6">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
+                            <span id="type-tip-symbol" class="input-group-text">$</span>
                         </div>
                         <input id="txtTip" value="0" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
                         <!--<div class="input-group-append">
@@ -78,19 +61,18 @@
                         <option value="platillo">platillo</option>
                         <option value="producto">producto</option>
                     </select>
-                    <select class="form-control col-12 col-md-4 mr-1" name="type" id="item-type">
-                            <option value="platillo">chiles</option>
-                            <option value="producto">producto</option>
+                    <select class="form-control col-12 col-md-4 mr-1" name="type" id="items">
+                           
                     </select>
-                    <input class="form-control col-12 col-md-2 mr-1" type="number" min="1" placeholder="cantidad">
-                    <button class="btn btn-info col-12 col-md-2">añadir</button>
+                    <input id="cant-items" class="form-control col-12 col-md-2 mr-1" type="number" value="1" min="1" placeholder="cantidad">
+                    <button id="addBtn" class="btn btn-info col-12 col-md-2">añadir</button>
 
                 </div>
                 <div class="row mt-4">
                     <p id="subtotal" class="col-12">subtotal: $90</p>
                     <p id="tip" class="col-12">propina: $90</p>
                     <p id="final-bill" class="col-md-5 col-12">Total: $90</p>
-                    <button class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
+                    <button id="payBtn" class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
                 </div>
                 
               </form>
@@ -120,15 +102,25 @@
         }
         return params;
         }
+        let globarOrder
+        let dishes = []
+        let products = []
         let tip= 0
         let total = 0 
         let subtotal = 0;
+        let tip_type = '$'
         var params = getSearchParameters();
         let subtotal_dom = document.getElementById("subtotal")
         let propina_dom = document.getElementById("tip")
         let total_dom = document.getElementById("final-bill")
         let txtTip = document.getElementById("txtTip")
         let list_items = document.getElementById("list-items")
+        let items = document.getElementById("items")
+        let addBtn = document.getElementById("addBtn")
+        let qtyItems = document.getElementById("cant-items")
+        let item_type = document.getElementById('item-type')
+        let type_tip_symbol = document.getElementById('type-tip-symbol')
+        let payBtn = document.getElementById('payBtn')
 
         fetch('/api/orders/' + params.id,
                 {
@@ -140,19 +132,157 @@
                 }).then(obj => obj.json())
                 .then((json) => json.data.order)
                 .then(order => {
+                    globarOrder = order
                     tip= order.tip
                     subtotal = order.total
                     total = subtotal +tip
                     txtTip.value = tip
                     updateValues()
+                    if(order.dishes.length>0){
+                        order.dishes.forEach(element => {
+                            list_items.insertAdjacentHTML("afterbegin", itemTohtml(element))
+                        });
+                    }
+
+                    if(order.products.length>0){
+                        order.products.forEach(element => {
+                            list_items.insertAdjacentHTML("afterbegin", itemTohtml(element))
+                        });
+                    }
                     
 
+                })
+
+                fetch('/api/dishes/',
+                {
+                    method: 'GET', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    }
+                }).then(obj => obj.json())
+                .then((json) => json.data.dishes)
+                .then(res=> {
+                    dishes=res
+                    listItems(dishes, "dish")
+                })
+
+                fetch('/api/products/',
+                {
+                    method: 'GET', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    }
+                }).then(obj => obj.json())
+                .then((json) => json.data.products)
+                .then(res => {
+                    products = res
                 })
 
                 function updateValues(){
                     propina_dom.innerText = "Propina: $" + tip
                     subtotal_dom.innerText = "Subtotal: $" + subtotal
                     total_dom.innerText = "Total: $" + total
+                }
+
+                function listItems(itemsArray ,type){
+                    items.setAttribute("type-items", type)
+                    itemsArray.forEach((element) => {
+                        items.insertAdjacentHTML("afterbegin", `<option item-value="${type}" value="${element._id + ""}">${element.name}</option>`)
+                    })
+                    
+                }
+
+                function itemTohtml(item){
+                    return `
+                    <tr>
+                            <th scope="row">${item.quantity}</th>
+                            <td>${item.name}</td>
+                            <td>${item.price}</td>
+                            <td>${item.quantity * item.price}</td>
+                     </tr>
+                    `
+                }
+
+                addBtn.onclick= addItemToOrder
+                function addItemToOrder(event){
+                    event.preventDefault();
+                    if (items.getAttribute("type-items") == "dish"){
+                        let dish = dishes.filter(el => el._id == items.value)[0]
+                        dish.quantity= qtyItems.value
+                        subtotal+= dish.price
+                        globarOrder.dishes.push(dish)
+                        list_items.insertAdjacentHTML("afterbegin",itemTohtml(dish))
+                    }else{
+                        let product = products.filter(el => el._id == items.value)[0]
+                        product.quantity= qtyItems.value
+                        subtotal+= product.price
+                        globarOrder.products.push(product)
+                        list_items.insertAdjacentHTML("afterbegin",itemTohtml(product))
+                    }
+                    globarOrder.total = total
+                    total = subtotal + tip
+                    updateValues()
+                    fetch('/api/orders/'+globarOrder._id,
+                        {
+                            method: 'PUT', 
+                            headers:{
+                                    'Content-Type': 'application/json',
+                                    'x-access-token': sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify(globarOrder)
+                        }).then(obj => obj.json())
+                        .then((json) => json.data)
+                        .then(res => {
+                            console.log(res)
+                        })
+                    
+                   
+                }
+
+                item_type.onchange= setItems
+
+                function setItems(){
+                    items.innerHTML= ''
+                    if(item_type.value == 'producto'){
+                        listItems(products,'product')
+                    }else{
+                        listItems(dishes,'dish')
+                    }
+                }
+                payBtn.onclick= paid
+                function paid(event){
+                    event.preventDefault()
+                    fetch('/api/orders/' + globarOrder._id + '/paid',
+                    {
+                        method: 'PUT', 
+                        headers:{
+                                'Content-Type': 'application/json',
+                                'x-access-token': sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify({}),
+                    }).then(obj => obj.json())
+                    .then((json) => json)
+                    .then(order => {
+                        console.log(order)
+                        window.location.href = '/ordenes'
+                    })
+                }
+
+                txtTip.onkeyup= calcTip
+
+                function calcTip(){
+                    let val = txtTip.value
+                    tip = tip_type == '$' ? parseInt(val) : (val * subtotal)/100
+                    total = subtotal + tip
+                    globarOrder.total =total
+                    updateValues()
+                }
+                function ChangeType(symbol){
+                    type_tip_symbol.innerHTML = symbol
+                    tip_type = symbol
+                    calcTip()
                 }
 
 

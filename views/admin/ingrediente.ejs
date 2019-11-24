@@ -13,31 +13,124 @@
       <%- include('../navbar'); %>
     <div class="jumbotron">
         <h1 class="display-4">Nuevo Ingrediente</h1>
-        <form>
+        <form id = "formularioProductos">
             <div class="row">
               <div class="col">
-                    <label for="exampleFormControlInput1">Nombre</label>
-                <input type="text" class="form-control col-md-3" placeholder="Nombre">
+                <label for="exampleFormControlInput1">Nombre</label>
+                <input id = "name" type="text" class="form-control col-md-3" placeholder="Nombre">
                 <br>
                 <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidad" min="1" class="form-control col-md-3" step = "0.1">
+                <input id = "cantidad" value = "0" type="number" name="cantidad" min="1" class="form-control col-md-3" step = "0.1">
                 <br>
                 <label for="exampleFormControlInput1">Unidad</label><br>
-                <select class="custom-select custom-select-lg mb-3 col-md-3">
-                        <option value="1">Kilogramos(kg)</option>
-                        <option value="2">Libras(lb)</option>
-                      </select> 
+                <select class="custom-select custom-select-lg mb-3" id = "unidad">
+                    <option value="Kilogramos">Kilogramos(kg)</option>
+                    <option value="Libras">Libras(lb)</option>
+                    <option value="Pieza">Pieza</option>
+                    <option value="Pieza">Botella</option>
+                    <option value="Pieza">Litros</option>
+            </select> 
               </div>
 
             </div>
           </form>
           <br>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Guardar</a>
+        <Button id = "saveProduct" class="btn btn-primary btn-lg" href="#" role="button">Guardar</Button>
       </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+            
+            var info = {};
+
+            let formularioProductos = document.getElementById("formularioProductos");
+            //console.log(formularioProductos);
+            let btnSaveProduct = document.getElementById("saveProduct");
+
+            btnSaveProduct.disabled = true;
+
+                var nombre = document.getElementById("name");
+                //console.log(nombre.value);
+                var cantidad = document.getElementById("cantidad");
+                //console.log(cantidad.value);
+                var unidad = document.getElementById("unidad");
+
+            formularioProductos.addEventListener("change", () => {
+
+                
+
+                //console.log("--------");
+
+                if(nombre.value.length == 0) nombre.classList.add("is-invalid");
+                else{
+                    nombre.classList.remove("is-invalid");
+                    nombre.classList.add("is-valid");
+                    //datos.push(nombre.value);
+                } 
+
+                if(cantidad.value == 0){
+                    cantidad.classList.add("is-invalid");
+                }
+                else{
+                    cantidad.classList.remove("is-invalid");
+                    cantidad.classList.add("is-valid");
+                    //datos.push(cantidad.value);
+                }
+
+                if(unidad.value.length == 0) nombre.classList.add("is-invalid");
+                else{
+                    unidad.classList.remove("is-invalid");
+                    unidad.classList.add("is-valid");
+                    //datos.push(unidad.value);
+                }
+
+                //console.log(datos);
+
+                //console.log("--------");
+
+                //console.log(btnSaveProduct.disabled);
+                
+                
+                if(nombre.value.length == 0 || unidad.value.length == 0 || cantidad.value == 0){
+
+                    btnSaveProduct.disabled = true;
+                }else{
+                    btnSaveProduct.disabled = false;
+                }
+
+                console.log(btnSaveProduct.disabled);
+            })
+
+            btnSaveProduct.addEventListener("click", (e) => {
+
+            info.name = nombre.value;
+            info.unit = unidad.value;
+            info.quantity = cantidad.value;
+
+            console.log(info);
+
+            var url = 'http://localhost:3000/api/ingredients';
+            var data = info;
+
+            fetch(url, {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+                'Content-Type': 'application/json',
+                'x-access-token': sessionStorage.getItem("token")
+            }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response =>{
+                console.log('Success:', response);
+                alert("Se añadió un nuevo ingrediente");
+                window.location.href = "/admin/ingredientes";
+            });
+            })
+
+    </script>
   </body>
 </html>

@@ -13,31 +13,159 @@
       <%- include('../navbar'); %>
     <div class="jumbotron">
         <h1 class="display-4">Editar Ingrediente</h1>
-        <form>
+        <form id = "formularioIngredientes">
             <div class="row">
               <div class="col">
                     <label for="exampleFormControlInput1">Nombre</label>
-                <input type="text" class="form-control col-md-3" placeholder="Nombre">
+                <input id = "name" type="text" class="form-control" placeholder="Nombre">
                 <br>
                 <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidad" min="1" class="form-control col-md-3" step = "0.1">
+                <input id = "cantidad" value = "0" type="number" name="cantidad" min="1" class="form-control">
                 <br>
-                <label for="exampleFormControlInput1">Unidad</label><br>
-                <select class="custom-select custom-select-lg mb-3 col-md-3">
-                        <option value="1">Kilogramos(kg)</option>
-                        <option value="2">Libras(lb)</option>
-                      </select> 
-              </div>
+                <label for="exampleFormControlInput1">Unidad:</label>
+                <input type ="text" name="unidad" id= "unit" class="form-control">
 
+              </div>
+              <!--<div class="col">
+                <label>Insertar imagen</label><br>
+                <input type="image" src="img/add.PNG" alt="Submit">
+
+              </div>-->
             </div>
           </form>
           <br>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Guardar</a>
+          <button id = "saveIngredient" class="btn btn-primary" href="#" role="button">Guardar cambios</button>
+          <button onclick = "backtoListIngredients()" id = "btnCancelar" class="btn btn-danger">Cancelar</button>
       </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        function backtoListProducts(){
+          window.location.href = "/admin/ingredientes";
+        }
+
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+    }
+
+    function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = tmparr[1];
+    }
+    return params;
+    }
+
+    var params = getSearchParameters();
+
+    console.log(params.id);
+
+    var ingredient;
+
+    var name;
+
+    var cantidad;
+
+    var unidad;
+
+    var info = {};
+
+
+
+    fetch(`http://localhost:3000/api/ingredients/${params.id}`,
+    {
+        method: 'GET', 
+        headers:{
+        'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.getItem("token")
+    }})
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data) {
+        console.log('data = ', data);
+        ingredient = JSON.parse(data).data.ingredient;
+        console.log("ingredient",ingredient);
+
+        document.getElementById("name").setAttribute("value",ingredient.name);
+        document.getElementById("cantidad").setAttribute("value",ingredient.quantity);
+
+        document.getElementById("unit").setAttribute("value",ingredient.unit);
+        document.getElementById("unit").innerText = ingredient.unit;
+
+        name = document.getElementById("name").value;
+        console.log(name);
+
+        cantidad = document.getElementById("cantidad").value;
+        console.log(cantidad);
+
+        unidad = document.getElementById("unit").value;
+        console.log(unidad);
+
+        
+
+
+        let formularioProductos = document.getElementById("formularioIngredientes");
+
+        let btnSaveProduct = document.getElementById("saveIngredient");
+
+        formularioProductos.addEventListener("change", () => {
+            name = document.getElementById("name").value;
+            console.log(name);
+
+            cantidad = document.getElementById("cantidad").value;
+            console.log(cantidad);
+
+            unidad = document.getElementById("unit").value;
+            console.log(unidad);
+
+        });
+
+        btnSaveProduct.addEventListener("click", (e) => {
+
+            info.name = name;
+            info.unit = unidad;
+            info.quantity = cantidad;
+
+            console.log(info);
+
+            var url = `http://localhost:3000/api/ingredients/${params.id}`;
+            var data = info;
+
+            fetch(url, {
+            method: 'PUT', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+                'Content-Type': 'application/json',
+                'x-access-token': sessionStorage.getItem("token")
+            }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response =>{
+                console.log('Success:', response);
+                alert("Se cambiaron los datos de un registro");
+                window.location.href = "/admin/ingredientes";
+            });
+})
+
+        
+
+
+
+        
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+
+    </script>
+
   </body>
 </html>

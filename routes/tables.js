@@ -38,7 +38,7 @@ router.post('/', function(req, res, next) {
        seats: req.body.seats
        
      }, (err, result)=>{
-      console.log("llego")
+      //console.log("llego")
        if(err){
          res.status(400).json({status: "error", message: err});
        }

@@ -7,6 +7,8 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useCreateIndex', true);
 
 mongoose.set('useUnifiedTopology', true);
+
+mongoose.set('useFindAndModify', true)
 //Set up default mongoose connection
 var mongoDB = 'mongodb://localhost/DASW2019'
 mongoose.connect(mongoDB);
