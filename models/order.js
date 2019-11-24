@@ -1,21 +1,14 @@
 const mongoose = require('mongoose')
-
+const dish = require('./dish')
+const product = require('./product')
 var Schema = mongoose.Schema
 
 
 //Define Schema
   var Schema = new Schema({
     table: { type: Schema.Types.ObjectId, ref: 'Table' },
-    products:[{
-      name: {type:String , required: true},
-      price:{type:Number , required: true},
-      qty:{type: Number, required:true}
-    }],
-    dishes: [{
-      name: {type:String , required: true},
-      price:{type:Number , required: true},
-      qty:{type: Number, required:true}
-    }],
+    products:[product.schema],
+    dishes: [dish.schema],
     total:{
         type:Number,
         default: 0 

@@ -33,24 +33,7 @@
                         </tr>
                     </thead>
                     <tbody id="list-items">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Chilaquiles</td>
-                            <td>$30</td>
-                            <td>$30</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jugo</td>
-                            <td>$15</td>
-                            <td>$30</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>taco</td>
-                            <td>$10</td>
-                            <td>$30</td>
-                        </tr>
+                        
                     </tbody>
                 </table>
           </div>
@@ -78,19 +61,18 @@
                         <option value="platillo">platillo</option>
                         <option value="producto">producto</option>
                     </select>
-                    <select class="form-control col-12 col-md-4 mr-1" name="type" id="item-type">
-                            <option value="platillo">chiles</option>
-                            <option value="producto">producto</option>
+                    <select class="form-control col-12 col-md-4 mr-1" name="type" id="items">
+                           
                     </select>
-                    <input class="form-control col-12 col-md-2 mr-1" type="number" min="1" placeholder="cantidad">
-                    <button class="btn btn-info col-12 col-md-2">añadir</button>
+                    <input id="cant-items" class="form-control col-12 col-md-2 mr-1" type="number" value="1" min="1" placeholder="cantidad">
+                    <button id="addBtn" class="btn btn-info col-12 col-md-2">añadir</button>
 
                 </div>
                 <div class="row mt-4">
                     <p id="subtotal" class="col-12">subtotal: $90</p>
                     <p id="tip" class="col-12">propina: $90</p>
                     <p id="final-bill" class="col-md-5 col-12">Total: $90</p>
-                    <button class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
+                    <button onclick="" class="btn btn-success col-md-2 col-12 text-center">cobrar</button>
                 </div>
                 
               </form>
@@ -120,6 +102,9 @@
         }
         return params;
         }
+        let globarOrder
+        let dishes = []
+        let products = []
         let tip= 0
         let total = 0 
         let subtotal = 0;
@@ -129,6 +114,9 @@
         let total_dom = document.getElementById("final-bill")
         let txtTip = document.getElementById("txtTip")
         let list_items = document.getElementById("list-items")
+        let items = document.getElementById("items")
+        let addBtn = document.getElementById("addBtn")
+        let qtyItems = document.getElementById("cant-items")
 
         fetch('/api/orders/' + params.id,
                 {
@@ -140,19 +128,103 @@
                 }).then(obj => obj.json())
                 .then((json) => json.data.order)
                 .then(order => {
+                    globarOrder = order
                     tip= order.tip
                     subtotal = order.total
                     total = subtotal +tip
                     txtTip.value = tip
                     updateValues()
+                    if(order.dishes.length>0){
+                        order.dishes.forEach(element => {
+                            list_items.insertAdjacentHTML("afterbegin", itemTohtml(element))
+                        });
+                    }
+
+                    if(order.products.length>0){
+                        order.products.forEach(element => {
+                            list_items.insertAdjacentHTML("afterbegin", itemTohtml(element))
+                        });
+                    }
                     
 
+                })
+
+                fetch('/api/dishes/',
+                {
+                    method: 'GET', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    }
+                }).then(obj => obj.json())
+                .then((json) => json.data.dishes)
+                .then(res=> {
+                    dishes=res
+                    listItems(dishes, "dish")
+                })
+
+                fetch('/api/products/',
+                {
+                    method: 'GET', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    }
+                }).then(obj => obj.json())
+                .then((json) => json.data.products)
+                .then(res => {
+                    products = res
                 })
 
                 function updateValues(){
                     propina_dom.innerText = "Propina: $" + tip
                     subtotal_dom.innerText = "Subtotal: $" + subtotal
                     total_dom.innerText = "Total: $" + total
+                }
+
+                function listItems(itemsArray ,type){
+                    items.setAttribute("type-items", type)
+                    itemsArray.forEach((element) => {
+                        items.insertAdjacentHTML("afterbegin", `<option item-value="${type}" value="${element._id + ""}">${element.name}</option>`)
+                    })
+                    
+                }
+
+                function itemTohtml(item){
+                    return `
+                    <tr>
+                            <th scope="row">${item.quantity}</th>
+                            <td>${item.name}</td>
+                            <td>${item.price}</td>
+                            <td>${item.quantity * item.price}</td>
+                     </tr>
+                    `
+                }
+
+                addBtn.onclick= addItemToOrder
+                function addItemToOrder(event){
+                    event.preventDefault();
+                    if (items.getAttribute("type-items") == "dish"){
+                        let dish = dishes.filter(el => el._id == items.value)[0]
+                        globarOrder.dishes.push(dish)
+                    }else{
+                        let product = products.filter(el => el._id == items.value)[0]
+                        globarOrder.products.push(product)
+                    }
+                    fetch('/api/orders/'+globarOrder._id,
+                        {
+                            method: 'PUT', 
+                            headers:{
+                                    'Content-Type': 'application/json',
+                                    'x-access-token': sessionStorage.getItem("token")
+                            },
+                            body: JSON.stringify(globarOrder)
+                        }).then(obj => obj.json())
+                        .then((json) => json.data)
+                        .then(res => {
+                            console.log(res)
+                        })
+                   
                 }
 
 

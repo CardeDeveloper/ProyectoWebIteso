@@ -84,7 +84,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">${order.clients}/${table.seats} Sillas ocupadas</h5>
-                        ${table.reference ? `<p class="card-text">Total : ${table.reference}</p>` : ''}
+                        ${table.reference ? `<p class="card-text">Referencia : ${table.reference}</p>` : ''}
                         <p class="card-text">Total : ${order.total}</p>
                         <a class="btn btn-primary" href="/orden?id=${order._id}">ver orden</a>
                     </div>
@@ -100,6 +100,8 @@
                     </div>
                     <div class="card-body">
                         <h4>Mesa desocupada</h4>
+                        <input value="1" min="1" id="${table._id+""}" class="form-control col-4" type="number" placeholder="clientes">
+                        <button class="btn btn-warning " onclick="crearOrden(${"'"+table._id+"'"})">Crear orden</button>
                     </div>
                 </div>
             </div>
@@ -108,6 +110,27 @@
                 })
                 
 
+            }
+
+            function crearOrden(table_id){
+                fetch('/api/orders/' ,
+                {
+                    method: 'POST', 
+                    headers:{
+                            'Content-Type': 'application/json',
+                            'x-access-token': sessionStorage.getItem("token")
+                    },
+                    body: JSON.stringify({
+                        table:table_id,
+                        total: 0,
+                        clients: document.getElementById(table_id).value
+                    }),
+                }).then(obj => obj.json())
+                .then((json) => json.data.order)
+                .then(order => {
+                    console.log(order)
+                    location.reload();
+                })
             }
                 
         
