@@ -83,7 +83,6 @@ router.get('/producto', function(req, res, next) {
 });
 
 
-
 router.get('/ingrediente', function(req, res, next) {
   res.render('admin/agregarIngrediente');
 });
