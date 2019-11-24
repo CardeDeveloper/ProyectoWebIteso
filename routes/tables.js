@@ -51,7 +51,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next){
-  tableModel.findOneAndUpdate(req.params.id, {
+  tableModel.updateOne({_id:req.params.id}, {
         number: req.body.number, 
         reference: req.body.reference, 
         seats: req.body.seats
