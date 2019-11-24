@@ -19,7 +19,7 @@ router.get('/:id', function(req, res, next) {
 
   //obtener orden por mesa
   router.get('/table/:id', function(req, res, next) {
-    orderModel.findOne({table:req.params.id}).populate('table').exec( function(err, order){
+    orderModel.findOne({table:req.params.id, is_active:true}).populate('table').exec( function(err, order){
    
       if(err){
         next(err)
@@ -68,10 +68,10 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next){
   //console.log(req.body)
   //console.log(req.params.id,)
-  orderModel.findOneAndUpdate(req.params.id, {
+  orderModel.updateOne({_id:req.params.id}, {
         table: req.body.table, 
         products: req.body.products== undefined ? []:JSON.parse(req.body.products), 
-        dishes:{$set: req.body.dishes} ,
+        dishes:req.body.dishes,
         total:req.body.total,
         clients: req.body.clients,
         tip:req.body.tip
@@ -89,8 +89,9 @@ router.put('/:id', function(req, res, next){
 
 //cerrar orden
 router.put('/:id/paid', function(req, res, next){
-  orderModel.findOneAndUpdate(req.params.id, {
-        is_active:false
+  console.log(req.params.id)
+  orderModel.updateOne({_id:req.params.id}, {
+      is_active:false
     }, function(err, orderInfo){
       if(err)
         next(err);
