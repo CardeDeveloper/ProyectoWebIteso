@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next){
-  dishModel.findOneAndUpdate(req.params.id, {
+  dishModel.updateOne({_id:req.params.id}, {
       name: req.body.name, 
       price:req.body.price,
       image: req.body.image,

@@ -51,7 +51,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next){
-  ingredientModel.findOneAndUpdate(req.params.id, {
+  ingredientModel.updateOne({_id:req.params.id}, {
       name: req.body.name, 
       unit: req.body.unit, 
       quantity: req.body.quantity
