@@ -71,7 +71,7 @@ router.put('/:id',middlewares.validateAdmin, function(req, res, next){
 
 
 router.delete('/:id',middlewares.validateAdmin, function(req, res, next) {
-  userModel.findOneAndDelete(req.params.id, function(err, userInfo){
+  userModel.deleteOne({_id:req.params.id}, function(err, userInfo){
     if(err)
       next(err);
     else{

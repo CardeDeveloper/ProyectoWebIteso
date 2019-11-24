@@ -127,7 +127,7 @@ router.put('/:id/paid', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next) {
-  orderModel.findOneAndDelete(req.params.id, function(err, orderInfo){
+  orderModel.deleteOne({_id:req.params.id}, function(err, orderInfo){
     if(err)
       next(err);
     else{

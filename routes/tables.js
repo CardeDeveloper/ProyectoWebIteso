@@ -66,7 +66,7 @@ router.put('/:id', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next) {
-  tableModel.findOneAndDelete(req.params.id, function(err, tableInfo){
+  tableModel.deleteOne({_id:req.params.id}, function(err, tableInfo){
     if(err)
       next(err);
     else{
