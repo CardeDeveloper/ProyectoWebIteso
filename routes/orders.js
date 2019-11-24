@@ -66,17 +66,22 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next){
+  //console.log(req.body)
+  //console.log(req.params.id,)
   orderModel.findOneAndUpdate(req.params.id, {
         table: req.body.table, 
         products: req.body.products== undefined ? []:JSON.parse(req.body.products), 
-        dishes: req.body.dishes== undefined ? []:JSON.parse(req.body.dishes),
+        dishes:{$set: req.body.dishes} ,
         total:req.body.total,
         clients: req.body.clients,
         tip:req.body.tip
     }, function(err, orderInfo){
-      if(err)
+      console.log("llego")
+      if(err){
+        console.log(err)
         next(err);
-      else{
+      }else{
+      
         res.json({status:"success", message: "order updated successfully", data: orderInfo});
       }
   });
