@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" class="form-control" aria-label="Sizing example input"
+                <input id = "search" type="text" class="form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-sm">
             </div>
 
@@ -83,9 +83,37 @@
     <script>
 
         var productos = [];
+
+        var productosBackUp = [];
+
         var tablaProductos = [];
         var current_page = 0
         var records_per_page = 3;
+
+        var search = document.getElementById("search");
+
+        search.onkeyup = filtrado;
+
+        function filtrado(event){
+            console.log(search.value)
+            productos = productosBackUp.filter((producto) => {
+                return producto.name.toUpperCase().trim().includes(search.value.toUpperCase().trim());
+            })
+            if(search.value == ""){
+                cargarProductos(productos)
+                loadPagination();
+                changePage(1);
+            }else{
+                loadPagination();
+                changePage(1);
+
+                loadHtml(productos);
+            }
+           
+
+            
+        }
+
 
         //var btn_next = document.getElementById("btn_next");
         //var btn_prev = document.getElementById("btn_prev");
@@ -137,7 +165,7 @@
             
             tablaProductos.push(product);
 
-            console.log(tablaProductos);
+            //console.log(tablaProductos);
 
 
             });
@@ -158,7 +186,7 @@
         }
 
         function mostratrProductos(products){
-            console.log(products);
+            //console.log(products);
             return `<tr>
             <td>${products.name}</td>
             <td>${products.quantity}</td>
@@ -177,7 +205,7 @@
             let btnElimnarProducto = document.getElementById("elimandoProducto");
 
             btnElimnarProducto.addEventListener("click", (e) => {
-                console.log(id);
+                //console.log(id);
                 var url = `http://localhost:3000/api/products/${id}`;
          
 
@@ -292,6 +320,9 @@
             .then(function(data) {
             console.log('data = ', data);
             productos = JSON.parse(data).data.products;
+            productosBackUp = productos;
+
+
             //console.log(productos);
             //console.log("--------");
 
