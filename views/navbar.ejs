@@ -25,6 +25,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/usuarios">Usuarios</a>
                 </li>
+                <li class="nav-item">
+                    <a onclick="logout()" class="nav-link" href="/">Salir</a>
+                </li>
                   
               </ul>
               
@@ -32,6 +35,11 @@
       </nav>
 
 <script>
+
+    if(!sessionStorage.getItem("token")){
+        window.location.href= "/"
+    }
+
     let list_links = document.getElementById("collapsibleNavId").children[0].children
     is_admin = sessionStorage.getItem("type")
     
@@ -43,6 +51,10 @@
         list_links[5].setAttribute("hidden", "")
         list_links[6].setAttribute("hidden", "")
 
+    }
+
+    function logout(){
+        sessionStorage.clear()
     }
 </script>
       
