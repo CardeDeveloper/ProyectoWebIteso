@@ -11,34 +11,29 @@
   </head>
   <body>
         <%- include('../navbar'); %>
-      <section>
+        <section>
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                        <form>
+                    <h1 class="display-4">Editar Mesa</h1>
+                        <form id = "formularioMesas">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">ubicacion</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
+                                <label for="exampleFormControlInput1">Ubicación:</label>
+                                <input type="text" class="form-control" id="ubication"
                                     placeholder="a la entrada">
                             </div>
                             <div class="form-group">
-                                    <label for="exampleFormControlInput2">Numero de sillas/label>
-                                    <input type="number" class="form-control" id="exampleFormControlInput2"
+                                    <label for="exampleFormControlInput2">Numero de sillas </label>
+                                    <input type="number" class="form-control" id="chairs"
                                         placeholder="2" min="2">
                                 </div>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Mesero asignado</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Seleccione</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <input value="Guardar" type="submit" class="btn btn-primary" >
+                                <label for="exampleFormControlSelect1">Número de mesa</label>
+                                <input type="number" class="form-control" id="NumMesas" min="1">
                             </div>
                         </form>
+                        <br>
+                        <button id = "saveMesa" class="btn btn-primary" href="#" role="button">Guardar cambios</button>
+                        <button onclick = "backtoListMesas()" id = "btnCancelar" class="btn btn-danger">Cancelar</button>
                 </div>
             </div>
       </section>
@@ -48,5 +43,127 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script>
+        function backtoListProducts(){
+            window.location.href = "/admin/mesas";
+        }
+
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+    }
+
+    function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = tmparr[1];
+    }
+    return params;
+    }
+
+    var params = getSearchParameters();
+
+    console.log(params.id);
+
+    var table;
+
+    var number;
+
+    var reference;
+
+    var seats;
+
+    var info = {};
+
+
+
+    fetch(`http://localhost:3000/api/tables/${params.id}`,
+    {
+        method: 'GET', 
+        headers:{
+        'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.getItem("token")
+    }})
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data) {
+        console.log('data = ', data);
+        table = JSON.parse(data).data.table;
+        console.log("table",table);
+
+        document.getElementById("ubication").setAttribute("value",table.reference);
+        document.getElementById("chairs").setAttribute("value",table.seats);
+        document.getElementById("NumMesas").setAttribute("value",table.number);
+
+
+        reference = document.getElementById("ubication").value;
+        console.log(reference);
+
+        seats = document.getElementById("chairs").value;
+        console.log(seats);
+
+        number = document.getElementById("NumMesas").value;
+        console.log(number);
+
+        
+        let formularioMesas = document.getElementById("formularioMesas");
+
+        let btnSavMesa = document.getElementById("saveMesa");
+
+        formularioMesas.addEventListener("change", () => {
+
+            reference = document.getElementById("ubication").value;
+            console.log(reference);
+
+            seats = document.getElementById("chairs").value;
+            console.log(seats);
+
+            number = document.getElementById("NumMesas").value;
+            console.log(number);
+
+        });
+
+        btnSavMesa.addEventListener("click", (e) => {
+
+            info.reference = reference;
+            info.seats = seats;
+            info.number = number;
+
+            console.log(info);
+
+            var url = `http://localhost:3000/api/tables/${params.id}`;
+            var data = info;
+
+            fetch(url, {
+            method: 'PUT', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+                'Content-Type': 'application/json',
+                'x-access-token': sessionStorage.getItem("token")
+            }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response =>{
+                console.log('Success:', response);
+                alert("Se cambiaron los datos de un registro");
+                window.location.href = "/admin/mesas";
+            });
+})
+
+        
+
+
+
+        
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+    </script>
+
   </body>
 </html>
