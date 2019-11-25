@@ -1,100 +1,282 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Title</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel ="stylesheet" href = "/css/style.css"> 
-  </head>
-  <body>
-      <%- include('../navbar'); %>
-        <section class="container">
-          <div class="row">
-              <div class="card mb-3 col-12 col-md-6" >
-                  <div class="row no-gutters">
-                    <div class="col-md-4">
-                      <img src="/images/Huga Piza.jpg" class="card-img" alt="..." >
-                    </div>
-                    <div class="col-md-8">
-                      <div class="card-body">
-                        <h4 class="card-title"><b>Mesero</b></h4>
-                        <p class="card-text">
-                            <b>Nombre:</b> Hugo Iván <br>
-                            <b>Usuario:</b> HPiza  <br>                                  
-                            <b>Password:</b> Pizas   <br>                                            
-                            <b>Creado el día:</b> 20/10/2015 <br>                                
-                            <b>Email: </b>hPiza@gmail.com                                                                                          </p>
-                        <button type="button" class="btn btn-primary">Editar datos</button>
-                        <button type="button" class="btn btn-primary">Borrar usuario</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-  
-                <div class="card mb-3 col-12 col-md-6" >
-                    <div class="row no-gutters">
-                      <div class="col-md-4">
-                        <img src="/images/Luis Fdo Gutiérrez1.jpg" class="card-img" alt="..." >
-                      </div>
-                      <div class="col-md-8">
-                        <div class="card-body">
-                          <h4 class="card-title"><b>Administrador</b></h4>
-                          <p class="card-text">
-                              <b>Nombre:</b> Luis Fernando Gutiérrez <br>
-                              <b>Usuario:</b> LuisGu <br>                                  
-                              <b>Password:</b> LuisFg   <br>                                            
-                              <b>Creado el día:</b> 15/8/2011 <br>                                
-                              <b>Email:</b> lfGutiérrez@gmail.com                                                                                          </p>
-                          <button type="button" class="btn btn-primary">Editar datos</button>
-                          <button type="button" class="btn btn-primary">Borrar usuario</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <%- include('../navbar'); %>
+  <section class="container">
+    <div d-flex align-items-center style="margin: 20px">
+      <button type="button" id="btnNew" class="btn btn-primary">Agregar Usuario</button>
+    </div>
+    <div class="row" id="row">
+      <div class="card mb-3 col-12 col-md-6">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="/images/Huga Piza.jpg" class="card-img" alt="...">
           </div>
-            
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class="card-title"><b>Mesero</b></h4>
+              <p class="card-text">
+                <b>Nombre:</b> Hugo Iván <br>
+                <b>Password:</b> Pizas <br>
+                <b>Creado el día:</b> 20/10/2015 <br>
+                <b>Email: </b>hPiza@gmail.com </p>
+              <button type="button" class="btn btn-primary" id="btnEdit">Editar datos</button>
+              <button type="button" class="btn btn-primary" id="btnDelete">Borrar usuario</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                <div class="container">
-                    <div class="row justify-content-startn">
-                        <div class="col-3" id = "imgAdd">
-                            <h5><b>Agregar usuario</b></h5>
-                            <img src = "/images/add.PNG">
-                        </div>
+      <div class="card mb-3 col-12 col-md-6">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="/images/Luis Fdo Gutiérrez1.jpg" class="card-img" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class="card-title"><b>Administrador</b></h4>
+              <p class="card-text">
+                <b>Nombre:</b> Luis Fernando Gutiérrez <br>
+                <b>Password:</b> LuisFg <br>
+                <b>Creado el día:</b> 15/8/2011 <br>
+                <b>Email:</b> lfGutiérrez@gmail.com </p>
 
-                        <!-- <div class="col-3 d-flex align-items-md-center justify-content-md-center">
-                            <button type="button" class="btn btn-primary">Guardar cambios</button>
-                        </div> -->
-                    </div>
-                </div>
+              <button type="button" class="btn btn-primary">Editar datos</button>
+              <button type="button" class="btn btn-primary">Borrar usuario</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">&raquo;</a>
-                    </li>
-                  </ul>
-                </nav>
+    <div class="d-flex justify-content-center">
+      <nav class="row mt-3 " aria-label="Page navigation">
+        <ul id="pagination" class="pagination">
+          <li class="page-item"><a id="btnPrev" class="page-link" href="#">Previous</a></li>
+          <li class="page-item"><a id="btNext" class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
 
-                
-                
-        </section>
-      
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script>
-    </script>
-  </body>
+
+  </section>
+
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <button id="deleteWarning " type="button" class="btn btn-primary">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+
+  <!-- JavaScript -->
+  <script>
+    let usersURL = 'http://localhost:3000/api/users';
+    let users = [];
+    let userCard = [];
+    let current_page = 0;
+    let records_per_page = 2;
+    // var btnNext = document.getElementById("btnNext");
+    //var btnPrev = document.getElementById("btnPrev");
+
+    //btnNext.addEventListener("click", nextPage);
+    //btnPrev.addEventListener("click", prevPage);
+
+    //Redirecciona a crear nuevo usuario
+    let btnNew = document.getElementById("btnNew");
+    btnNew.addEventListener("click", function (event) {
+      window.location.href = "/admin/usuarios/nuevo"
+    });
+
+    window.addEventListener('load', function (event) {
+      getUsers();
+    })
+
+    function loadUsers(users) {
+      users.forEach(function (users, index) {
+        let userObj = {};
+
+      })
+    }
+    function userToHTML(users) {
+      return `
+      <div class="card mb-3 col-12 col-md-6">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="/images/Huga Piza.jpg" class="card-img" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class="card-title">${user.type}</h4>
+              <p class="card-text">
+                <b>Nombre:</b> ${user.name + " " + user.name2} <br>
+                <b>Password:</b> ${user.password} <br>
+                <b>Creado el día:</b> ${user.today} <br>
+                <b>Email: </b>${user.email} 
+              </p>
+              <a href="/admin/usuarios/editar?id=${user._id}" role="button" class="btn btn-primary">Editar Usuario</a>
+              <a href="#" role="button" class="btn btn-primary" onlclick="deleteUser('${user._id},${user.email}')">Borrar Usuario</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      `
+    }
+
+    //Se crean los numeros de pagina
+    function loadPagination() {
+      let pagination = document.getElementById("pagination");
+      let pags = "";
+      for (let i = 0; i < numPages(); i++) {
+        pags += `<li class="page-item"><a onclick="changePageCustom(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+      }
+      let str =
+        `<li class="page-item"><button onclick="prevPage()" id="btnPrev" class="page-link" href="#">Previous</button></li>
+            ${pags} <li class="page-item"><button onclick="nextPage()" id="btnNext" class="page-link" href="#">Next</button></li>`
+
+      pagination.innerHTML = str;
+    }
+
+    //Ir a pagina siguiente
+    function nextPage() {
+      if (current_page < numPages()) {
+        current_page++;
+        changePage(current_page);
+      }
+    }
+    //Ir a pagina anterior
+    function prevPage() {
+      if (current_page > 1) {
+        current_page--;
+        changePage(current_page);
+      }
+    }
+
+    function changePageCustom(page) {
+      current_page = page;
+      changePage(current_page);
+    }
+    //Calcula el numero de paginas 
+    function numPages() {
+      return Math.ceil(users.length / records_per_page);
+    }
+
+    function loadHTML(users) {
+      let string = "";
+      let lista = document.getElementById("row");
+      users.forEach(element => {
+        string += userToHTML(element);
+      })
+      lista.innerHTML = string;
+    }
+
+
+    //Cambio de pagina
+    function changePage(page) {
+      let btnNext = document.getElementById("btnNext");
+      let btnPrev = document.getElementById("btnPrev");
+
+      //Valida Pagina
+      if (page < 1) page = 1;
+      if (page > numPages()) page = numPages();
+
+      let usersPage = [];
+
+      for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
+        if (userCard[i] != undefined) {
+          usersPage.push(userCard[i]);
+        }
+      }
+
+      //Carga el HTML que se agregara
+      loadHTML(usersPage);
+
+      if (page == 1) {
+        btnPrev.style.visibility = "hidden";
+      } else {
+        btnPrev.style.visibility = "visible";
+      }
+
+      if (page == numPages()) {
+        btnNext.style.visibility = "hidden";
+      } else {
+        btnNext.style.visibility = "visible";
+      }
+    }
+    /********************* REQUESTS ******************/
+    function getUsers() {
+      xhr = new XMLHttpRequest();
+      xhr.open("GET", usersURL);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('x-access-token', sessionStorage.getItem("token"));
+      xhr.send();
+      xhr.onload = function () {
+        if (xhr.status != 200) {
+          alert(xhr.status + ': ' + xhr.statusText + ' ' + xhr.responseText);
+        } else {
+          let responseJSON = JSON.parse(xhr.responseText);
+          loadPagination();
+          changePage(1);
+        }
+      };
+    }
+
+    function deleteUser(id, email) {
+      let deleteWarning = document.getElementById("modalBody");
+      deleteWarning.innerText = "¿Estás seguro de qué quieres eliminar al usuario " + email + "?";
+      let btnDelete = document.getElementById("deleteWarning ");
+      let idUrl = `http://localhost:3000/api/usuarios/${id}`;
+
+      xhr = new XMLHttpRequest();
+      xhr.open("DELETE", idUrl);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('x-access-token', sessionStorage.getItem("token"));
+      xhr.send();
+      xhr.onload = function () {
+        if (xhr.status != 200) {
+          alert(xhr.status + ': ' + xhr.statusText + ' ' + xhr.responseText);
+        } else {
+          location.reload();
+        }
+      };
+    }
+  </script>
+</body>
+
 </html>
