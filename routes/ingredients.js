@@ -66,7 +66,7 @@ router.put('/:id', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next) {
-  ingredientModel.findOneAndDelete(req.params.id, function(err, ingredientInfo){
+  ingredientModel.deleteOne({_id:req.params.id}, function(err, ingredientInfo){
     if(err)
       next(err);
     else{

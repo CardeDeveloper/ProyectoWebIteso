@@ -69,7 +69,7 @@ router.put('/:id', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next) {
-  dishModel.findOneAndDelete(req.params.id, function(err, dishInfo){
+  dishModel.deleteOne({_id:req.params.id}, function(err, dishInfo){
     if(err)
       next(err);
     else{

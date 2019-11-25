@@ -70,7 +70,7 @@ router.put('/:id', function(req, res, next){
 
 
 router.delete('/:id', function(req, res, next) {
-  productModel.findOneAndDelete(req.params.id, function(err, productInfo){
+  productModel.deleteOne({_id:req.params.id}, function(err, productInfo){
     if(err)
       next(err);
     else{
