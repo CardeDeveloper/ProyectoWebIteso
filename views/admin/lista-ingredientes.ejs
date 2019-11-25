@@ -66,7 +66,7 @@
                     <div class="modal-body" id="modalBody">
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                      <button id="cancelar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                       <button id = "elimandoIngrediente" type="button" class="btn btn-primary">Eliminar</button>
                     </div>
                   </div>
@@ -80,14 +80,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
-        
+
+        let btnCancelar = document.getElementById("cancelar");
+
+        btnCancelar.onclick = permanecer;
+
+        function permanecer(){
+            window.location.href = "/admin/ingredientes";
+        }
+                
         var ingredientes = [];
 
         var ingredientesBackUp = [];
 
         var tablaIngredientes = [];
         var current_page = 0
-        var records_per_page = 3;
+        var records_per_page = 2;
 
         var search = document.getElementById("search");
 
@@ -102,6 +110,7 @@
                 cargarIngredientes(ingredientes)
                 loadPagination();
                 changePage(1);
+                window.location.href = "/admin/ingredientes";
             }else{
                 loadPagination();
                 changePage(1);
