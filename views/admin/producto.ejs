@@ -46,6 +46,7 @@
           </form>
           <br>
         <button id = "saveProduct" class="btn btn-primary btn-lg" href="#" role="button">Guardar</button>
+        <button id = "cancelar" class="btn btn-danger btn-lg" href="#" role="button">Cancelar</button>
       </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -54,6 +55,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
+
+      let btnSalir = document.getElementById("cancelar");
+
+      btnSalir.onclick = salir;
+
+      function salir(){
+        window.location.href = "/admin/productos";
+      }
         var info = {};
 
         let formularioProductos = document.getElementById("formularioProductos");
@@ -171,6 +180,10 @@
             alert("Se añadió un nuevo producto");
             window.location.href = "/admin/productos";
         });
+
+
+
+
         })
 
        

@@ -30,7 +30,8 @@
                                 <label for="exampleFormControlSelect1">Número de mesa</label>
                                 <input type="number" class="form-control" id="NumMesas" min="1">
                             </div>
-                            <Button id = "saveMesa" class="btn btn-primary btn-lg" href="#" role="button">Guardar</Button>
+                            <button id = "saveMesa" class="btn btn-primary btn-lg" href="#" role="button">Guardar</button>
+                            <a id = "cancelar" class="btn btn-danger btn-lg" href = "/admin/mesas" role="button">Cancelar</a>
                         </form>
                 </div>
             </div>
@@ -43,6 +44,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
+
+        let btnSalir = document.getElementById("cancelar");
+
+        btnSalir.onclick = salir;
+
+        function salir(){
+          console.log("entre");
+          window.location.href = "/admin/mesas";
+        }
+
           var info = {};
 
           let formularioProductos = document.getElementById("formularioProductos");
@@ -110,7 +121,7 @@
           info.reference = ubication.value;
           info.seats = chairs.value;
 
-          console.log(info);
+          //console.log(info);
 
           var url = 'http://localhost:3000/api/tables';
           var data = info;
@@ -126,7 +137,7 @@
           .catch(error => console.error('Error:', error))
           .then(response =>{
               console.log('Success:', response);
-              alert("Se añadió uns nueva mesa");
+              alert("Se añadió una nueva mesa");
               window.location.href = "/admin/mesas";
           });
           })

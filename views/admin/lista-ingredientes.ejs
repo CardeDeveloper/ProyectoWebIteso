@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" class="form-control" aria-label="Sizing example input"
+                <input id = "search" type="text" class="form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-sm">
             </div>
             <div class="row">
@@ -66,7 +66,7 @@
                     <div class="modal-body" id="modalBody">
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                      <button id="cancelar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                       <button id = "elimandoIngrediente" type="button" class="btn btn-primary">Eliminar</button>
                     </div>
                   </div>
@@ -80,11 +80,45 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
-        
+
+        let btnCancelar = document.getElementById("cancelar");
+
+        btnCancelar.onclick = permanecer;
+
+        function permanecer(){
+            window.location.href = "/admin/ingredientes";
+        }
+                
         var ingredientes = [];
+
+        var ingredientesBackUp = [];
+
         var tablaIngredientes = [];
         var current_page = 0
-        var records_per_page = 3;
+        var records_per_page = 2;
+
+        var search = document.getElementById("search");
+
+        search.onkeyup = filtrado;
+
+        function filtrado(event){
+            console.log(search.value)
+            ingredientes = ingredientesBackUp.filter((ingrediente) => {
+                return ingrediente.name.toUpperCase().trim().includes(search.value.toUpperCase().trim());
+            })
+            if(search.value == ""){
+                cargarIngredientes(ingredientes)
+                loadPagination();
+                changePage(1);
+                window.location.href = "/admin/ingredientes";
+            }else{
+                loadPagination();
+                changePage(1);
+
+                loadHtml(ingredientes);
+            }
+            
+        }
 
         //var btn_next = document.getElementById("btn_next");
         //var btn_prev = document.getElementById("btn_prev");
@@ -291,6 +325,7 @@
             .then(function(data) {
             console.log('data = ', data);
             ingredientes = JSON.parse(data).data.ingredients;
+            ingredientesBackUp = ingredientes;
             console.log("arreglo de ingrediente",ingredientes);
             //console.log("--------");
 
