@@ -16,69 +16,38 @@
   <%- include('../navbar'); %>
   <section class="container">
     <div d-flex align-items-center style="margin: 20px">
-      <button type="button" id="btnNew" class="btn btn-primary">Agregar Usuario</button>
-    </div>
-    <div class="row" id="row">
-      <div class="card mb-3 col-12 col-md-6">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img src="/images/Huga Piza.jpg" class="card-img" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h4 class="card-title"><b>Mesero</b></h4>
-              <p class="card-text">
-                <b>Nombre:</b> Hugo Iván <br>
-                <b>Password:</b> Pizas <br>
-                <b>Creado el día:</b> 20/10/2015 <br>
-                <b>Email: </b>hPiza@gmail.com </p>
-              <button type="button" class="btn btn-primary" id="btnEdit">Editar datos</button>
-              <button type="button" class="btn btn-primary" id="btnDelete">Borrar usuario</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card mb-3 col-12 col-md-6">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img src="/images/Luis Fdo Gutiérrez1.jpg" class="card-img" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h4 class="card-title"><b>Administrador</b></h4>
-              <p class="card-text">
-                <b>Nombre:</b> Luis Fernando Gutiérrez <br>
-                <b>Password:</b> LuisFg <br>
-                <b>Creado el día:</b> 15/8/2011 <br>
-                <b>Email:</b> lfGutiérrez@gmail.com </p>
-
-              <button type="button" class="btn btn-primary">Editar datos</button>
-              <button type="button" class="btn btn-primary">Borrar usuario</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button onclick = "nuevoUsuario()" type="button" id="btnNew" class="btn btn-primary">Agregar Usuario</button>
     </div>
 
-    <div class="d-flex justify-content-center">
+    <div class="input-group input-group-sm mb-3 mt-3 col-12">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
+        </div>
+
+        <input id = "search" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+
+    <div class="container" id="bodyCards">
+    </div>
+
+    <footer class="d-flex justify-content-center">
       <nav class="row mt-3 " aria-label="Page navigation">
-        <ul id="pagination" class="pagination">
-          <li class="page-item"><a id="btnPrev" class="page-link" href="#">Previous</a></li>
-          <li class="page-item"><a id="btNext" class="page-link" href="#">Next</a></li>
-        </ul>
+              <ul id="pagination" class="pagination">
+                <li class="page-item"><a id="btn_prev" class="page-link" href="#">Previous</a></li>
+               
+                <li class="page-item"><a id="btn_next" class="page-link" href="#">Next</a></li>
+              </ul>
       </nav>
-    </div>
+    </footer>
 
 
   </section>
 
-  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-    aria-hidden="true">
+  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Usuario</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Elimando un producto</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -86,8 +55,8 @@
         <div class="modal-body" id="modalBody">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-          <button id="deleteWarning " type="button" class="btn btn-primary">Eliminar</button>
+          <button id = "cancelar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <button id = "elimandoUsuario" type="button" class="btn btn-primary">Eliminar</button>
         </div>
       </div>
     </div>
@@ -107,175 +76,277 @@
 
   <!-- JavaScript -->
   <script>
-    let usersURL = 'http://localhost:3000/api/users';
-    let users = [];
-    let userCard = [];
-    let current_page = 0;
-    let records_per_page = 2;
-    // var btnNext = document.getElementById("btnNext");
-    //var btnPrev = document.getElementById("btnPrev");
+          let btnCancelar = document.getElementById("cancelar");
 
-    //btnNext.addEventListener("click", nextPage);
-    //btnPrev.addEventListener("click", prevPage);
+          btnCancelar.onclick = permanecer;
 
-    //Redirecciona a crear nuevo usuario
-    let btnNew = document.getElementById("btnNew");
-    btnNew.addEventListener("click", function (event) {
-      window.location.href = "/admin/usuarios/nuevo"
-    });
+          function permanecer(){
+              window.location.href = "/admin/usuarios";
+          }
 
-    window.addEventListener('load', function (event) {
-      getUsers();
-    })
+          var usuarios = [];
 
-    function loadUsers(users) {
-      users.forEach(function (users, index) {
-        let userObj = {};
+          var usuariosBackUp = [];
 
-      })
-    }
-    function userToHTML(users) {
-      return `
-      <div class="card mb-3 col-12 col-md-6">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img src="/images/Huga Piza.jpg" class="card-img" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h4 class="card-title">${user.type}</h4>
-              <p class="card-text">
-                <b>Nombre:</b> ${user.name + " " + user.name2} <br>
-                <b>Password:</b> ${user.password} <br>
-                <b>Creado el día:</b> ${user.today} <br>
-                <b>Email: </b>${user.email} 
-              </p>
-              <a href="/admin/usuarios/editar?id=${user._id}" role="button" class="btn btn-primary">Editar Usuario</a>
-              <a href="#" role="button" class="btn btn-primary" onlclick="deleteUser('${user._id},${user.email}')">Borrar Usuario</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      `
-    }
+          var tablaUsuarios = [];
+          var current_page = 0
+          var records_per_page = 2;
 
-    //Se crean los numeros de pagina
-    function loadPagination() {
-      let pagination = document.getElementById("pagination");
-      let pags = "";
-      for (let i = 0; i < numPages(); i++) {
-        pags += `<li class="page-item"><a onclick="changePageCustom(${i+1})" class="page-link" href="#">${i+1}</a></li>`
-      }
-      let str =
-        `<li class="page-item"><button onclick="prevPage()" id="btnPrev" class="page-link" href="#">Previous</button></li>
-            ${pags} <li class="page-item"><button onclick="nextPage()" id="btnNext" class="page-link" href="#">Next</button></li>`
+          var search = document.getElementById("search");
 
-      pagination.innerHTML = str;
-    }
+          search.onkeyup = filtrado;
 
-    //Ir a pagina siguiente
-    function nextPage() {
-      if (current_page < numPages()) {
-        current_page++;
-        changePage(current_page);
-      }
-    }
-    //Ir a pagina anterior
-    function prevPage() {
-      if (current_page > 1) {
-        current_page--;
-        changePage(current_page);
-      }
-    }
+          function filtrado(event){
+              console.log(search.value)
+              usuarios = usuariosBackUp.filter((usuario) => {
+                  return usuario.name.toUpperCase().trim().includes(search.value.toUpperCase().trim());
+              })
+              if(search.value == ""){
 
-    function changePageCustom(page) {
-      current_page = page;
-      changePage(current_page);
-    }
-    //Calcula el numero de paginas 
-    function numPages() {
-      return Math.ceil(users.length / records_per_page);
-    }
+                  cargarUsuarios(usuarios);
+                  loadPagination();
+                  changePage(1);
 
-    function loadHTML(users) {
-      let string = "";
-      let lista = document.getElementById("row");
-      users.forEach(element => {
-        string += userToHTML(element);
-      })
-      lista.innerHTML = string;
-    }
+                  window.location.href = "/admin/usuarios";
+                  
+
+              }else{
+
+                  loadPagination();
+                  changePage(1);
+
+                  loadHtml(usuarios);
+              }
+              
+          }
+
+          function nuevoUsuario(){
+              window.location.href = "/admin/usuarios/nuevo";
+          }
+
+          function cargarUsuarios(usuarios){
+              usuarios.forEach(function(user,index){
+
+                  let u = {};
+
+              let tdId = document.createElement('td');
+              let tdName = document.createElement('td');
+              let tdCantidad = document.createElement('td');
+              let tdAcciones = document.createElement('td');
+              let newRow = document.createElement('tr');
+
+              //console.log("Entre",index);
+
+              tdId.innerText = index + 1;
+              tdName.innerText = user.name;
+              tdAcciones.innerHTML = 
+              `<button onclick="editarProducto()" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-danger"><i class="fa fa-trash"></i></button>`;
+              /*newRow.appendChild(tdId);
+              newRow.appendChild(tdName);
+              newRow.appendChild(tdCantidad);
+              newRow.appendChild(tdAcciones);
+
+              tbody.appendChild(newRow);
+
+              tbody.hidden = true;*/
+              
+              u.id = tablaUsuarios.length+1;
+              u.name = user.name;
+              
+              tablaUsuarios.push(user);
+
+              //console.log(tablaUsuarios);
 
 
-    //Cambio de pagina
-    function changePage(page) {
-      let btnNext = document.getElementById("btnNext");
-      let btnPrev = document.getElementById("btnPrev");
+              });
+          }
 
-      //Valida Pagina
-      if (page < 1) page = 1;
-      if (page > numPages()) page = numPages();
+          function prevPage(){ 
+              if (current_page > 1) {
+              current_page--;
+              changePage(current_page);
+              }
+          }
 
-      let usersPage = [];
+          function nextPage(){
+              if (current_page < numPages()) {
+                  current_page++;
+                  changePage(current_page);
+              }
+          }
 
-      for (var i = (page - 1) * records_per_page; i < (page * records_per_page); i++) {
-        if (userCard[i] != undefined) {
-          usersPage.push(userCard[i]);
-        }
-      }
+          function mostrarUsuarios(users){
+            let d = new Date(users.created_at);
+              //console.log(users);
+              return `
+                        <div class="col-12">
+                            <div class="col-md-4">
+                              <img src=${users.url_image?users.url_image:"/images/user.png"} class="card-img" alt="...">
+                            </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                              <h4 class="card-title">${users.type == 1?"Administrador":"Mesero"}</b></h4>
+                              <p class="card-text">
+                              <b>Nombre:</b>${users.name}<br>
+                              <b>Creado el día:</b>${d.getDay() + "-" + d.getMonth() + "-" + d.getFullYear()}<br>
+                              <b>Email: </b>hPiza@gmail.com </p>
+                              <a href = "/admin/usuarios/editar?id=${users._id}" class="btn btn-warning">Editar Usuario<i class="fa fa-edit"></i></a>
+                              <button data-target="#exampleModalLong" data-toggle="modal" id ="EliminarUsuario" onclick="eliminarUsuario(${"'"+users._id+"'"},${"'"+users.name+"'"})" class="btn btn-danger">Eliminar Usuario</button>
+                            </div>
+                          </div>
+                        `
+          }
 
-      //Carga el HTML que se agregara
-      loadHTML(usersPage);
+          function eliminarUsuario(id,name){
+              console.log(id);
+              let textoModal = document.getElementById("modalBody");
+              textoModal.innerText = "¿Estás seguro de qué quieres eleminar el usuario "+ name +"?";
+              //console.log(id);
 
-      if (page == 1) {
-        btnPrev.style.visibility = "hidden";
-      } else {
-        btnPrev.style.visibility = "visible";
-      }
+              let btnEliminarUsuario = document.getElementById("elimandoUsuario");
 
-      if (page == numPages()) {
-        btnNext.style.visibility = "hidden";
-      } else {
-        btnNext.style.visibility = "visible";
-      }
-    }
-    /********************* REQUESTS ******************/
-    function getUsers() {
-      xhr = new XMLHttpRequest();
-      xhr.open("GET", usersURL);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('x-access-token', sessionStorage.getItem("token"));
-      xhr.send();
-      xhr.onload = function () {
-        if (xhr.status != 200) {
-          alert(xhr.status + ': ' + xhr.statusText + ' ' + xhr.responseText);
-        } else {
-          let responseJSON = JSON.parse(xhr.responseText);
-          loadPagination();
-          changePage(1);
-        }
-      };
-    }
+              btnEliminarUsuario.addEventListener("click", (e) => {
+                  //console.log(id);
+                  var url = `http://localhost:3000/api/users/${id}`;
+          
 
-    function deleteUser(id, email) {
-      let deleteWarning = document.getElementById("modalBody");
-      deleteWarning.innerText = "¿Estás seguro de qué quieres eliminar al usuario " + email + "?";
-      let btnDelete = document.getElementById("deleteWarning ");
-      let idUrl = `http://localhost:3000/api/usuarios/${id}`;
+                  fetch(url, {
+                  method: 'DELETE', // or 'PUT'
+                  headers:{
+                      'Content-Type': 'application/json',
+                      'x-access-token': sessionStorage.getItem("token")
+                  }
+                  }).then(res => res.json())
+                  .catch(error => console.error('Error:', error))
+                  .then(response =>{
+                      console.log('Success:', response);
+                      alert("Se eliminó el usuario " + name);
+                      location.reload();
+                  });
+                  })
 
-      xhr = new XMLHttpRequest();
-      xhr.open("DELETE", idUrl);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('x-access-token', sessionStorage.getItem("token"));
-      xhr.send();
-      xhr.onload = function () {
-        if (xhr.status != 200) {
-          alert(xhr.status + ': ' + xhr.statusText + ' ' + xhr.responseText);
-        } else {
-          location.reload();
-        }
-      };
-    }
+          }
+
+
+
+
+
+          function changePage(page){   
+              let btn_next = document.getElementById("btn_next");
+              let btn_prev = document.getElementById("btn_prev");
+
+              // Validate page
+              if (page < 1) page = 1;
+              if (page > numPages()) page = numPages();
+
+              let users_page= []
+
+              for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
+                  if(tablaUsuarios[i] != undefined){
+                      users_page.push(tablaUsuarios[i]);
+                      //console.log("users_page");
+                      //console.log(users_page);
+                  
+                  }
+              }
+
+              loadHtml(users_page);
+
+              if (page == 1) {
+              // btn_prev.setAttribute("disabled","")
+                  btn_prev.style.visibility = "hidden";
+              } else {
+                  btn_prev.style.visibility = "visible";
+                  //btn_prev.removeAttribute("disabled")
+              }
+
+              if (page == numPages()) {
+                  
+                  btn_next.style.visibility = "hidden";
+                  //btn_next.setAttribute("disabled","")
+              } else {
+                  btn_next.style.visibility = "visible";
+                  //btn_next.removeAttribute("disabled")
+              }
+          }
+
+          function numPages()
+          {
+              return Math.ceil(usuarios.length / records_per_page);
+          }
+
+          function changePageCustom(page){
+              current_page = page;
+              changePage(current_page)
+          }
+
+          function loadPagination(){
+              let pagination = document.getElementById("pagination")
+              let pags= ""
+              for(i = 0 ; i<numPages() ; i++){
+                  pags+=`<li class="page-item"><a onclick="changePageCustom(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+              }
+
+              let str = `<li class="page-item"><button onclick="prevPage()" id="btn_prev" class="page-link" href="#">Previous</button></li>
+              ${pags} <li class="page-item"><button onclick="nextPage()" id="btn_next" class="page-link" href="#">Next</button></li>`
+
+              pagination.innerHTML = str;
+          }
+
+          function loadHtml(users){
+              let string= ""
+              let lista = document.getElementById("bodyCards");
+              users.forEach(element => {
+              string+= mostrarUsuarios(element);
+          });
+
+              lista.innerHTML = string;
+
+
+          }
+
+
+
+          fetch('http://localhost:3000/api/users',{
+                      method: 'GET', 
+                      //body: JSON.stringify(data), // data can be `string` or {object}!
+                      headers:{
+                          'Content-Type': 'application/json',
+                          'x-access-token': sessionStorage.getItem("token")
+                      }
+                  })
+              .then(function(response) {
+                  return response.text();
+              })
+              .then(function(data) {
+              console.log('data = ', data);
+              usuarios = JSON.parse(data).data.users;
+              usuariosBackUp = usuarios;
+
+
+              //console.log(productos);
+              //console.log("--------");
+
+              cargarUsuarios(usuarios);
+
+              //tablaUsuarios = document.getElementById("tbody").children;
+
+              //console.log(tablaUsuarios);
+
+              btn_next.onclick = nextPage;
+              btn_prev.onclick = prevPage;
+
+              loadPagination();
+              changePage(1);
+
+
+
+              })
+              .catch(function(err) {
+              console.error(err);
+          });
+
   </script>
 </body>
 
