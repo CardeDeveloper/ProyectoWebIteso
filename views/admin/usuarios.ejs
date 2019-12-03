@@ -107,7 +107,7 @@
 
   <!-- JavaScript -->
   <script>
-    let usersURL = 'http://localhost:3000/api/users';
+    let usersURL = '/api/users';
     let users = [];
     let userCard = [];
     let current_page = 0;
@@ -261,7 +261,7 @@
       let deleteWarning = document.getElementById("modalBody");
       deleteWarning.innerText = "¿Estás seguro de qué quieres eliminar al usuario " + email + "?";
       let btnDelete = document.getElementById("deleteWarning ");
-      let idUrl = `http://localhost:3000/api/usuarios/${id}`;
+      let idUrl = `/api/usuarios/${id}`;
 
       xhr = new XMLHttpRequest();
       xhr.open("DELETE", idUrl);
