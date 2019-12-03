@@ -34,7 +34,7 @@ router.post('/', function(req, res, next) {
     try{
     dishModel.create({
        name: req.body.name, 
-       ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients),
+       ingredients: req.body.ingredients== undefined ? []:req.body.ingredients,
        price:req.body.price,
        image: req.body.image
 
