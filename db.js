@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 mongoose.set('useNewUrlParser', true);
 //fix warning collection.ensureIndex is deprecated. Use createIndexes instead.
 mongoose.set('useCreateIndex', true);
+//mongoose.set('debug', true);
 
 mongoose.set('useUnifiedTopology', true);
 

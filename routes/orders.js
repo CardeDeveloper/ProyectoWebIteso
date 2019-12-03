@@ -66,12 +66,16 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next){
-  //console.log(req.body)
-  //console.log(req.params.id,)
+  
+  //console.log(req.body.dishes)
+
+  //console.log(req.params.id)
+  try{
   orderModel.updateOne({_id:req.params.id}, {
+    
         table: req.body.table, 
-        products: req.body.products== undefined ? []:JSON.parse(req.body.products), 
-        dishes:req.body.dishes,
+        products: req.body.products== undefined ? []:req.body.products, 
+        dishes:req.body.dishes== undefined ? []:req.body.dishes,
         total:req.body.total,
         clients: req.body.clients,
         tip:req.body.tip
@@ -85,6 +89,11 @@ router.put('/:id', function(req, res, next){
         res.json({status:"success", message: "order updated successfully", data: orderInfo});
       }
   });
+}catch(err){
+  console.log(err)
+  next(err);
+
+}
 });
 
 //cerrar orden

@@ -181,6 +181,7 @@
                 })
 
                 function updateValues(){
+                    
                     propina_dom.innerText = "Propina: $" + tip
                     subtotal_dom.innerText = "Subtotal: $" + subtotal
                     total_dom.innerText = "Total: $" + total
@@ -210,15 +211,27 @@
                     event.preventDefault();
                     if (items.getAttribute("type-items") == "dish"){
                         let dish = dishes.filter(el => el._id == items.value)[0]
-                        dish.quantity= qtyItems.value
-                        subtotal+= dish.price
-                        globarOrder.dishes.push(dish)
+                        dish.quantity= qtyItems.value *1
+                        subtotal+= dish.price * dish.quantity
+                        total+= dish.price * dish.quantity
+                        if(globarOrder.dishes.filter(el => el._id == items.value).length>0){
+                            globarOrder.dishes.filter(el => el._id == items.value)[0].quantity += dish.quantity
+                        }else{
+                            globarOrder.dishes.push(dish)
+                        }
+                        
                         list_items.insertAdjacentHTML("afterbegin",itemTohtml(dish))
                     }else{
                         let product = products.filter(el => el._id == items.value)[0]
-                        product.quantity= qtyItems.value
-                        subtotal+= product.price
-                        globarOrder.products.push(product)
+                        product.quantity= qtyItems.value*1
+                        subtotal+= (product.price*product.quantity)
+                        total+= (product.price*product.quantity)
+                        if(globarOrder.products.filter(el => el._id == items.value).length>0){
+                            globarOrder.products.filter(el => el._id == items.value)[0].quantity += (product.quantity*1)
+                        }else{
+                            globarOrder.products.push(product)
+                        }
+                        
                         list_items.insertAdjacentHTML("afterbegin",itemTohtml(product))
                     }
                     globarOrder.total = total
@@ -235,7 +248,7 @@
                         }).then(obj => obj.json())
                         .then((json) => json.data)
                         .then(res => {
-                            console.log(res)
+                            //console.log(res)
                         })
                     
                    
@@ -273,11 +286,27 @@
                 txtTip.onkeyup= calcTip
 
                 function calcTip(){
-                    let val = txtTip.value
+                    
+                    let val = txtTip.value ==""? 0: txtTip.value
                     tip = tip_type == '$' ? parseInt(val) : (val * subtotal)/100
                     total = subtotal + tip
+                    globarOrder.tip = tip
                     globarOrder.total =total
                     updateValues()
+                    fetch('/api/orders/' + globarOrder._id ,
+                    {
+                        method: 'PUT', 
+                        headers:{
+                                'Content-Type': 'application/json',
+                                'x-access-token': sessionStorage.getItem("token")
+                        },
+                        body: JSON.stringify(globarOrder),
+                    }).then(obj => obj.json())
+                    .then((json) => json)
+                    .then(order => {
+                        //console.log(order)
+                        //window.location.href = '/ordenes'
+                    })
                 }
                 function ChangeType(symbol){
                     type_tip_symbol.innerHTML = symbol
