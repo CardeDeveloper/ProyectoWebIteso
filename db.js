@@ -11,7 +11,8 @@ mongoose.set('useUnifiedTopology', true);
 
 mongoose.set('useFindAndModify', true)
 //Set up default mongoose connection
-var mongoDB = 'mongodb://localhost/DASW2019'
+//var mongoDB = 'mongodb://localhost/DASW2019'
+var mongoDB= 'mongodb://3.16.68.119/DASW2019'
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
