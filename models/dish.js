@@ -7,7 +7,7 @@ var Schema = mongoose.Schema
   var Schema = new Schema({
     name: {type:String , required: true},
     price:{type:Number , required: true},
-    ingredients: [ingredient.schema],
+    ingredients: [String],
     quantity:{type: Number},
     image:{type:String},
     description:{type:String},
