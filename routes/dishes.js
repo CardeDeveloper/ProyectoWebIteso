@@ -36,7 +36,8 @@ router.post('/', function(req, res, next) {
        name: req.body.name, 
        ingredients: req.body.ingredients== undefined ? []:req.body.ingredients,
        price:req.body.price,
-       image: req.body.image
+       image: req.body.image,
+       description:req.body.description
 
        
      }, (err, result)=>{
@@ -56,6 +57,7 @@ router.put('/:id', function(req, res, next){
   dishModel.updateOne({_id:req.params.id}, {
       name: req.body.name, 
       price:req.body.price,
+      description:req.body.description,
       image: req.body.image,
       ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients)
     }, function(err, dishInfo){

@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" class="form-control" aria-label="Sizing example input"
+                <input id="search" type="text" class="form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-sm">
             </div>
             <h2 class="text-center">Ordenes</h2>
@@ -25,60 +25,31 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Mesa</th>
-                            <th scope="col">Mesero</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col">total</th>
+                            <th scope="col">clientes</th>
+                            <th scope="col">Activa</th>
+
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody-orders">
                         <tr>
                             <th scope="row">1</th>
                             <td>3</td>
-                            <td>Juan</td>
-                            <td>
-                                <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                            </td>
+                            <td>$160</td>
+                            <td>3/7</td>
+                            <td>si</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>5</td>
-                            <td>Juan</td>
-                            <td>
-                                <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>2</td>
-                            <td>Pedro</td>
-                            <td>
-                                <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
 
             <footer class="d-flex justify-content-center">
                     <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
+                        <ul id="pagination" class="pagination">
+                                <li class="page-item"><a id="btn_prev" class="page-link" href="#">Previous</a></li>
+                             
+                                <li class="page-item"><a id="btn_next" class="page-link" href="#">Next</a></li>
                             </li>
                         </ul>
                     </nav>
@@ -91,5 +62,172 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        let orders_global= []
+        let ordersBackup= []
+        let tablaorders = []
+        var current_page = 0
+        var records_per_page = 3;
+
+        var search = document.getElementById("search");
+            fetch('/api/orders',{
+                    method: 'GET', 
+                    //body: JSON.stringify(data), // data can be `string` or {object}!
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'x-access-token': sessionStorage.getItem("token")
+                    }
+                })
+                .then(res => res.json())
+                .then((json) => json.data.orders)
+                .then(o => {
+                    ordersBackup= o
+                    orders_global=o
+                    printOrders(ordersBackup)
+                    loadPagination();
+                    changePage(1);
+                    
+                })
+
+                
+  
+                function printOrders(orders){
+                    //console.log(tables)
+                    orders_global=orders
+                    let cards = document.getElementById('tbody-orders')
+                    cards.innerHTML=""
+                    let htmlStr = orders.map(async function(order) {
+                        tablaorders.push(order)
+                        let str = await orderToHtml(order)
+                        cards.insertAdjacentHTML("afterbegin", str) 
+                        //console.log(str)
+                        return await str
+                    })
+                  
+                }
+                
+            
+
+            async function orderToHtml(order){
+               return await  
+                `
+                <tr>
+                            <th scope="row">${order._id}</th>
+                            <td>$${order.total}</td>
+                            <td>${order.clients}</td>
+                            <td>${order.is_active== true ? "si" : "no"}</td>
+                        </tr>
+                `
+                
+
+            }
+
+            function numPages()
+        {
+            return Math.ceil(orders_global.length / records_per_page);
+        }
+
+        function changePageCustom(page){
+            current_page = page;
+            changePage(current_page)
+        }
+        function loadPagination(){
+            let pagination = document.getElementById("pagination")
+            let pags= ""
+            for(i = 0 ; i<numPages() ; i++){
+                pags+=`<li class="page-item"><a onclick="changePageCustom(${i+1})" class="page-link" href="#">${i+1}</a></li>`
+            }
+
+            let str = `<li class="page-item"><button onclick="prevPage()" id="btn_prev" class="page-link" href="#">Previous</button></li>
+            ${pags} <li class="page-item"><button onclick="nextPage()" id="btn_next" class="page-link" href="#">Next</button></li>`
+  
+            pagination.innerHTML = str;
+        }
+
+            search.onkeyup = filtrado;
+
+        function filtrado(event){
+            console.log(search.value)
+            orders_global = ordersBackup.filter((order) => {
+                return order._id.toUpperCase().trim().includes(search.value.toUpperCase().trim());
+            })
+            if(search.value == ""){
+
+                //console.log("Entré if");
+                //console.log(orders);
+
+                printOrders(orders_global)
+                loadPagination();
+                changePage(1);
+
+                window.location.href = "/admin/ordenes";
+                
+
+            }else{
+                //console.log("Entré else");
+                //console.log(orders);
+
+                loadPagination();
+                changePage(1);
+
+                printOrders(orders_global);
+            }
+            
+        }
+
+        function prevPage(){ 
+            if (current_page > 1) {
+            current_page--;
+            changePage(current_page);
+            }
+        }
+
+        function nextPage(){
+            if (current_page < numPages()) {
+                current_page++;
+                changePage(current_page);
+            }
+        }
+        function changePage(page){   
+            let btn_next = document.getElementById("btn_next");
+            let btn_prev = document.getElementById("btn_prev");
+
+            // Validate page
+            if (page < 1) page = 1;
+            if (page > numPages()) page = numPages();
+
+            let orders_page= []
+
+            for (var i = (page-1) * records_per_page; i < (page * records_per_page); i++) {
+                if(tablaorders[i] != undefined){
+                    orders_page.push(tablaorders[i]);
+                    //console.log("Productos page");
+                    //console.log(products_page);
+                
+                }
+            }
+            orders_global=orders_page
+            printOrders(orders_page);
+    
+            if (page == 1) {
+            // btn_prev.setAttribute("disabled","")
+                btn_prev.style.visibility = "hidden";
+            } else {
+                btn_prev.style.visibility = "visible";
+                //btn_prev.removeAttribute("disabled")
+            }
+
+            if (page == numPages()) {
+                
+                btn_next.style.visibility = "hidden";
+                //btn_next.setAttribute("disabled","")
+            } else {
+                btn_next.style.visibility = "visible";
+                //btn_next.removeAttribute("disabled")
+            }
+        }
+
+
+    </script>
   </body>
 </html>
