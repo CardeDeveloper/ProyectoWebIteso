@@ -209,7 +209,7 @@
 
               btnEliminarUsuario.addEventListener("click", (e) => {
                   //console.log(id);
-                  var url = `http://localhost:3000/api/users/${id}`;
+                  var url = `/api/users/${id}`;
           
 
                   fetch(url, {
@@ -309,7 +309,7 @@
 
 
 
-          fetch('http://localhost:3000/api/users',{
+          fetch('/api/users',{
                       method: 'GET', 
                       //body: JSON.stringify(data), // data can be `string` or {object}!
                       headers:{
