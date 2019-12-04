@@ -116,7 +116,7 @@
           })
 
           btnSaveProduct.addEventListener("click", (e) => {
-
+          e.preventDefault()
           info.number = numMesas.value;
           info.reference = ubication.value;
           info.seats = chairs.value;
@@ -133,15 +133,16 @@
               'Content-Type': 'application/json',
               'x-access-token': sessionStorage.getItem("token")
           }
-          }).then(res => res.json())
-          .catch(error => console.error('Error:', error))
+          })
+          .then(res => res.json())
           .then(response =>{
-              console.log('Success:', response);
-              alert("Se añadió una nueva mesa");
               window.location.href = "/admin/mesas";
-          });
+              alert("Se añadió una nueva mesa");
+          })
+          .catch(error => console.error('Error:', error))
           })
     </script>
 
   </body>
 </html>
+

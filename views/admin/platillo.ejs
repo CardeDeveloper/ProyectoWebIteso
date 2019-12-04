@@ -35,9 +35,9 @@
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">descripcion</label>
                                 <textarea class="form-control" rows="3" id = "textArea"></textarea>
-                            </div>
+                            </div>  
                      
-                                <button class="btn btn-primary btn-lg" href="#" role="button"id = "savePlatillo" class="btn btn-primary">Guardar</button>
+                                <button type = "submit" class="btn btn-primary btn-lg" href="#" role="button"id = "savePlatillo" class="btn btn-primary">Guardar</button>
       
                         </form>
                 </div>
@@ -58,6 +58,8 @@
 
       var ingredientesPlatillos = [];
       var ingredientesPlatillosName = [];
+
+      var ingredientesFinales = [];
 
 
       fetch('/api/ingredients',{
@@ -142,9 +144,6 @@
 
             
             //console.log(info.seleccionados);
-
-            
-
             btnSave.addEventListener("click", (e) => {
               e.preventDefault();
               console.log(info.seleccionados);
@@ -157,7 +156,15 @@
 
               console.log(ingredientesPlatillosName);
 
-              info.ingredients = ingredientesPlatillosName;
+              for(let i=0; i<ingredientesPlatillosName.length;i++){
+                  for(let j=0; j<ingredientes.length;j++){
+                    if(ingredientesPlatillosName[i] == ingredientes[j].name){
+                        ingredientesFinales.push(ingredientes[j]);
+                    }
+                  }
+              }
+
+              info.ingredients = ingredientesFinales;
               info.name = name.value;
               info.price = precio.value;
               console.log(textArea.value)
@@ -185,11 +192,8 @@
                     alert("Se añadió un nuevo platillo");
                     window.location.href = "/admin/platillos";
                 });
+                
                 })
-
-
-
-
             })
             .catch(function(err) {
             console.error(err);
