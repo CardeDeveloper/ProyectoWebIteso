@@ -224,7 +224,7 @@
 
             btnElimnarProducto.addEventListener("click", (e) => {
                 //console.log(id);
-                var url = `http://localhost:3000/api/products/${id}`;
+                var url = `/api/products/${id}`;
          
 
                 fetch(url, {
@@ -324,7 +324,7 @@
 
         
 
-        fetch('http://localhost:3000/api/products',{
+        fetch('/api/products',{
                     method: 'GET', 
                     //body: JSON.stringify(data), // data can be `string` or {object}!
                     headers:{
