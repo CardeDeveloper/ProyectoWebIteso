@@ -31,7 +31,7 @@ router.get('/:id', function(req, res, next) {
   });
 /* GET orders listing. */
 router.get('/', function(req, res, next) {
-  orderModel.find({}, function(err, orders){
+  orderModel.find({}).populate('table').exec( function(err, orders){
  
     if(err){
       next(err)

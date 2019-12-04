@@ -66,8 +66,8 @@ router.get('/admin/usuarios', function(req, res, next) {
   res.render('admin/usuarios');
 });
 router.get('/admin/usuarios/editar', function(req, res, next) {
-  res.render('admin/EditarUsuario');
-});
+  res.render('admin/EditarUsuario'); 
+}); 
 
 router.get('/admin/usuarios/nuevo', function(req, res, next) {
   res.render('admin/AgregarUsuario');

@@ -79,7 +79,7 @@
 
 
 
-    fetch(`http://localhost:3000/api/ingredients/${params.id}`,
+    fetch(`/api/ingredients/${params.id}`,
     {
         method: 'GET', 
         headers:{
@@ -136,7 +136,7 @@
 
             console.log(info);
 
-            var url = `http://localhost:3000/api/ingredients/${params.id}`;
+            var url = `/api/ingredients/${params.id}`;
             var data = info;
 
             fetch(url, {

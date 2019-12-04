@@ -217,7 +217,7 @@
 
             btnElimnarMesa.addEventListener("click", (e) => {
                 console.log(id);
-                var url = `http://localhost:3000/api/tables/${id}`;
+                var url = `/api/tables/${id}`;
          
 
                 fetch(url, {
@@ -313,7 +313,7 @@
 
         
 
-        fetch('http://localhost:3000/api/tables',{
+        fetch('/api/tables',{
                     method: 'GET', 
                     //body: JSON.stringify(data), // data can be `string` or {object}!
                     headers:{

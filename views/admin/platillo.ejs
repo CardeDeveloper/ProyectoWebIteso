@@ -17,8 +17,7 @@
                         <form id = "formulario">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Nombre</label>
-                                <input type="text" class="form-control" id="name"
-                                    placeholder="enchiladas">
+                                <input type="text" class="form-control" id="name">
                             </div>
                             <div class="form-group">
                                     <label for="exampleFormControlInput2">Precio</label>
@@ -35,10 +34,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">descripcion</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" id = "textArea"></textarea>
-                            </div>
+                                <textarea class="form-control" rows="3" id = "textArea"></textarea>
+                            </div>  
                      
-                                <button class="btn btn-primary btn-lg" href="#" role="button"id = "savePlatillo" class="btn btn-primary">Guardar</button>
+                                <button type = "submit" class="btn btn-primary btn-lg" href="#" role="button"id = "savePlatillo" class="btn btn-primary">Guardar</button>
       
                         </form>
                 </div>
@@ -56,7 +55,15 @@
       var ingredientesNames = [];
       var info = {};
 
-      fetch('http://localhost:3000/api/ingredients',{
+
+      var ingredientesPlatillos = [];
+      var ingredientesPlatillosName = [];
+
+      var ingredientesFinales = [];
+
+
+      fetch('/api/ingredients',{
+
                     method: 'GET', 
                     //body: JSON.stringify(data), // data can be `string` or {object}!
                     headers:{
@@ -94,6 +101,10 @@
 
             let formulario = document.getElementById("formulario");
 
+            let btnSave = document.getElementById("savePlatillo");
+
+            btnSave.disabled = true;
+
             var optionsSelected;
             var name = document.getElementById("name");
             var precio = document.getElementById("precio");
@@ -106,24 +117,83 @@
 
               info.seleccionados = optionsSelected;
 
+            if(name.value.length == 0) name.classList.add("is-invalid");
+            else{
+                name.classList.remove("is-invalid");
+                name.classList.add("is-valid");
+            } 
+
+            if(precio.value == 0){
+                precio.classList.add("is-invalid");
+            }
+            else{
+                precio.classList.remove("is-invalid");
+                precio.classList.add("is-valid");
+                //datos.push(precio.value);
+            }
+            
+            if(name.value.length == 0 || precio.value == 0){
+              btnSave.disabled = true;
+            }else{
+              btnSave.disabled = false;
+            }
+
 
 
             });
 
             
-            console.log(info.seleccionados);
-
-            let btnSave = document.getElementById("savePlatillo");
-
+            //console.log(info.seleccionados);
             btnSave.addEventListener("click", (e) => {
-              info.seleccionados = optionsSelected;
+              e.preventDefault();
+              console.log(info.seleccionados);
+              ingredientesPlatillos = Array.from(info.seleccionados);
+              console.log(ingredientesPlatillos);
+
+              for(let i=0; i<ingredientesPlatillos.length;i++){
+                ingredientesPlatillosName[i] = ingredientesPlatillos[i].value;
+              }
+
+              console.log(ingredientesPlatillosName);
+
+              for(let i=0; i<ingredientesPlatillosName.length;i++){
+                  for(let j=0; j<ingredientes.length;j++){
+                    if(ingredientesPlatillosName[i] == ingredientes[j].name){
+                        ingredientesFinales.push(ingredientes[j]);
+                    }
+                  }
+              }
+
+              info.ingredients = ingredientesFinales;
+              info.name = name.value;
+              info.price = precio.value;
+              console.log(textArea.value)
+              if(textArea.value.length == 0){
+                info.description = "";
+              }else
+              info.description = textArea.value;
+
               console.log(info);
-            })
+        
+                var url = 'http://localhost:3000/api/dishes';
+                var data = info;
 
-
-
-
-
+                fetch(url, {
+                method: 'POST', // or 'PUT'
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers:{
+                    'Content-Type': 'application/json',
+                    'x-access-token': sessionStorage.getItem("token")
+                }
+                }).then(res => res.json())
+                .catch(error => console.error('Error:', error))
+                .then(response =>{
+                    console.log('Success:', response);
+                    alert("Se añadió un nuevo platillo");
+                    window.location.href = "/admin/platillos";
+                });
+                
+                })
             })
             .catch(function(err) {
             console.error(err);
