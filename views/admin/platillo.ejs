@@ -17,8 +17,7 @@
                         <form id = "formulario">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Nombre</label>
-                                <input type="text" class="form-control" id="name"
-                                    placeholder="enchiladas">
+                                <input type="text" class="form-control" id="name">
                             </div>
                             <div class="form-group">
                                     <label for="exampleFormControlInput2">Precio</label>
@@ -35,7 +34,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">descripcion</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" id = "textArea"></textarea>
+                                <textarea class="form-control" rows="3" id = "textArea"></textarea>
                             </div>
                      
                                 <button class="btn btn-primary btn-lg" href="#" role="button"id = "savePlatillo" class="btn btn-primary">Guardar</button>
@@ -56,7 +55,13 @@
       var ingredientesNames = [];
       var info = {};
 
+
+      var ingredientesPlatillos = [];
+      var ingredientesPlatillosName = [];
+
+
       fetch('/api/ingredients',{
+
                     method: 'GET', 
                     //body: JSON.stringify(data), // data can be `string` or {object}!
                     headers:{
@@ -94,6 +99,10 @@
 
             let formulario = document.getElementById("formulario");
 
+            let btnSave = document.getElementById("savePlatillo");
+
+            btnSave.disabled = true;
+
             var optionsSelected;
             var name = document.getElementById("name");
             var precio = document.getElementById("precio");
@@ -106,20 +115,77 @@
 
               info.seleccionados = optionsSelected;
 
+            if(name.value.length == 0) name.classList.add("is-invalid");
+            else{
+                name.classList.remove("is-invalid");
+                name.classList.add("is-valid");
+            } 
+
+            if(precio.value == 0){
+                precio.classList.add("is-invalid");
+            }
+            else{
+                precio.classList.remove("is-invalid");
+                precio.classList.add("is-valid");
+                //datos.push(precio.value);
+            }
+            
+            if(name.value.length == 0 || precio.value == 0){
+              btnSave.disabled = true;
+            }else{
+              btnSave.disabled = false;
+            }
+
 
 
             });
 
             
-            console.log(info.seleccionados);
+            //console.log(info.seleccionados);
 
-            let btnSave = document.getElementById("savePlatillo");
+            
 
             btnSave.addEventListener("click", (e) => {
-              info.seleccionados = optionsSelected;
-              console.log(info);
-            })
+              e.preventDefault();
+              console.log(info.seleccionados);
+              ingredientesPlatillos = Array.from(info.seleccionados);
+              console.log(ingredientesPlatillos);
 
+              for(let i=0; i<ingredientesPlatillos.length;i++){
+                ingredientesPlatillosName[i] = ingredientesPlatillos[i].value;
+              }
+
+              console.log(ingredientesPlatillosName);
+
+              info.ingredients = ingredientesPlatillosName;
+              info.name = name.value;
+              info.price = precio.value;
+              console.log(textArea.value)
+              if(textArea.value.length == 0){
+                info.description = "";
+              }else
+              info.description = textArea.value;
+
+              console.log(info);
+        
+                var url = 'http://localhost:3000/api/dishes';
+                var data = info;
+
+                fetch(url, {
+                method: 'POST', // or 'PUT'
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers:{
+                    'Content-Type': 'application/json',
+                    'x-access-token': sessionStorage.getItem("token")
+                }
+                }).then(res => res.json())
+                .catch(error => console.error('Error:', error))
+                .then(response =>{
+                    console.log('Success:', response);
+                    alert("Se añadió un nuevo platillo");
+                    window.location.href = "/admin/platillos";
+                });
+                })
 
 
 
