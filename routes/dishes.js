@@ -59,7 +59,7 @@ router.put('/:id', function(req, res, next){
       price:req.body.price,
       description:req.body.description,
       image: req.body.image,
-      ingredients: req.body.ingredients== undefined ? []:JSON.parse(req.body.ingredients)
+      ingredients: req.body.ingredients== undefined ? []:req.body.ingredients,
     }, function(err, dishInfo){
       if(err)
         next(err);

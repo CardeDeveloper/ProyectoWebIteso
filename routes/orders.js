@@ -47,8 +47,8 @@ router.post('/', function(req, res, next) {
     try{
     orderModel.create({
        table: req.body.table, 
-       products: req.body.products, 
-       dishes: req.body.dishes,
+       products: req.body.products== undefined ? []:req.body.products, 
+       dishes: req.body.dishes== undefined ? []:req.body.dishes,
        total:req.body.total,
        clients: req.body.clients
        
