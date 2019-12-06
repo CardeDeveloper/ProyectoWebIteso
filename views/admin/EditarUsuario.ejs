@@ -11,48 +11,167 @@
   </head>
   <body>
       <%- include('../navbar'); %>
-    <div class="jumbotron">
-        <h1 class="display-4">Editar usuario</h1>
-        <form>
+      <div class="jumbotron">
+          <h1 class="display-4">Editar usuario</h1>
+          <form id = "formularioUsuarios">
             <div class="row">
               <div class="col">
-                    <label for="exampleFormControlInput1">Nombre</label>
-                <input type="text" class="form-control" placeholder="Nombre">
-                <br>
-                <label for="exampleFormControlInput1">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                <label for="exampleFormControlInput1">Nombre</label>
+                <input type="text" class="form-control" id="name" placeholder="Nombre">
                 <br>
                 <label for="exampleFormControlInput1">Email address</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"> 
+                <input type="email" class="form-control" id="email" placeholder="@">
                 <br>
                 <label for="exampleFormControlInput1">Puesto</label>
-                <select class="custom-select custom-select-lg mb-3">
-                        <option value="1">Mesero</option>
-                        <option value="2">Administrador</option>
-                      </select> 
+                <select class="custom-select custom-select-lg mb-3" id="position">
+                  <option value="0">Mesero</option>
+                  <option value="1">Administrador</option>
+                </select>
               </div>
               <div class="col">
-                    <label for="exampleFormControlInput1">Apellido</label>
-                <input type="text" class="form-control" placeholder="Apellido">
-                 <br>
-
-                <label for="start">Fecha de creación:</label>
-                <input type="date" id="start" name="trip-start" value="2010-07-22">
+                <!--<label for="exampleFormControlInput1">Apellido</label>
+                <input type="text" class="form-control" id="apellido" placeholder="Apellido">
+                <br>-->
                 <br>
-                <br>
-                <label>Insertar imagen</label><br>
-                <input type="image" src="images/add.PNG" alt="Submit">
-
+                <label for="exampleFormControlInput1">Url:</label>
+                <input id = "url" type="text" class="form-control" placeholder="url">
+      
               </div>
             </div>
           </form>
           <br>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Guardar</a>
-      </div>
+          <button id = "saveUser" class="btn btn-primary btn-lg" href="#" role="button">Guardar</button>
+          <button onclick = "backtoListUsers()" id = "cancelar" class="btn btn-danger btn-lg" href="#" role="button">Cancelar</button>
+        </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+       function backtoListUsers(){
+        window.location.href = "/admin/usuarios";
+    }
+
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+    }
+
+    function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = tmparr[1];
+    }
+    return params;
+    }
+
+    var params = getSearchParameters();
+
+    console.log(params.id);
+
+    var user;
+
+    var name;
+
+    var position;
+
+    var urlImagen;
+
+    var info = {};
+
+
+
+    fetch(`/api/users/${params.id}`,
+    {
+        method: 'GET', 
+        headers:{
+        'Content-Type': 'application/json',
+        'x-access-token': sessionStorage.getItem("token")
+    }})
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data) {
+        console.log('data = ', data);
+        user = JSON.parse(data).data.users;
+        console.log("product",user);
+
+        document.getElementById("name").setAttribute("value",user.name);
+        //document.getElementById("apellido").setAttribute("value",product.price);
+        document.getElementById("url").setAttribute("value",user.url_image);
+        document.getElementById("position").setAttribute("value",user.type);
+        document.getElementById("email").setAttribute("value",user.email);
+
+        name = document.getElementById("name").value;
+        console.log(name);
+
+        urlImagen = document.getElementById("url").value;
+
+        position = document.getElementById("position").value;
+        console.log(position);
+
+        email = document.getElementById("email").value;
+        console.log(email);
+
+        let formularioUsuarios = document.getElementById("formularioUsuarios");
+
+        let btnSaveUser = document.getElementById("saveUser");
+
+        formularioUsuarios.addEventListener("change", () => {
+          name = document.getElementById("name").value;
+          console.log(name);
+
+          urlImagen = document.getElementById("url").value;
+
+          position = document.getElementById("position").value;
+          console.log(position);
+
+          email = document.getElementById("email").value;
+          console.log(email);
+
+        });
+
+        btnSaveUser.addEventListener("click", (e) => {
+
+            info.name = name;
+            info.type = position;
+            info.email = email;
+            info.url_image = urlImagen;
+
+            console.log("info",info);
+
+            var url = `/api/users/${params.id}`;
+            var data = info;
+
+            fetch(url, {
+            method: 'PUT', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+                'Content-Type': 'application/json',
+                'x-access-token': sessionStorage.getItem("token")
+            }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response =>{
+                console.log('Success:', response);
+                alert("Se cambiaron los datos de un registro");
+                window.location.href = "/admin/usuarios";
+            });
+})
+
+        
+
+
+
+        
+    })
+    .catch(function(err) {
+        console.error(err);
+    });
+
+    </script>
   </body>
 </html>

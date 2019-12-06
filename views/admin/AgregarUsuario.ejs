@@ -16,36 +16,38 @@
   <%- include('../navbar'); %>
   <div class="jumbotron">
     <h1 class="display-4">Nuevo usuario</h1>
-    <form>
+    <form id = "formularioUsuarios">
       <div class="row">
         <div class="col">
           <label for="exampleFormControlInput1">Nombre</label>
-          <input type="text" class="form-control" id="nameInput" placeholder="Nombre">
+          <input type="text" class="form-control" id="name" placeholder="Nombre">
           <br>
           <label for="exampleFormControlInput1">Password</label>
-          <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+          <input type="password" class="form-control" id="password" placeholder="Password">
           <br>
           <label for="exampleFormControlInput1">Email address</label>
-          <input type="email" class="form-control" id="emailInput" placeholder="name@example.com">
+          <input type="email" class="form-control" id="email" placeholder="@">
           <br>
           <label for="exampleFormControlInput1">Puesto</label>
-          <select class="custom-select custom-select-lg mb-3" id="typeInput">
+          <select class="custom-select custom-select-lg mb-3" id="position">
             <option value="0">Mesero</option>
             <option value="1">Administrador</option>
           </select>
         </div>
         <div class="col">
           <label for="exampleFormControlInput1">Apellido</label>
-          <input type="text" class="form-control" id="name2Input" placeholder="Apellido">
+          <input type="text" class="form-control" id="apellido" placeholder="Apellido">
           <br>
           <br>
-          <button type="button" class="btn btn-outline-primary" id="imgSubmit">Subir Imagen</button>
+          <label for="exampleFormControlInput1">Url:</label>
+          <input id = "url" type="text" class="form-control" placeholder="url">
 
         </div>
       </div>
     </form>
     <br>
-    <a class="btn btn-primary btn-lg" href="#" role="button" id="btnSave">Guardar</a>
+    <button id = "saveUser" class="btn btn-primary btn-lg" href="#" role="button">Guardar</button>
+    <button id = "cancelar" class="btn btn-danger btn-lg" href="#" role="button">Cancelar</button>
   </div>
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -60,49 +62,133 @@
   </script>
   <!-- JavaScript -->
   <script>
-    let user = {};
-    let usersURL = '/api/users';
-    //Cargar Imagen
-    let imgSubmit = document.getElementById("imgSubmit");
-    imgSubmit.addEventListener("click", function (event) {
-      event.preventDefault();
-    });
-    //Guardar Usuarios
-    let btnSave = document.getElementById("btnSave");
-    btnSave.addEventListener("click", function (event) {
-      event.preventDefault();
-      let name = document.getElementById("nameInput");
-      let name2 = document.getElementById("name2Input");
-      let password = document.getElementById("passwordInput");
-      let email = document.getElementById("emailInput");
-      let type = document.getElementById("typeInput").selectedIndex;
-      let today = new Date();
-      let date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
-      user = {
-        name: name.value,
-        type: document.getElementsByTagName("option")[type].value,
-        email: email.value,
-        password: password.value,
-        name2: name2.value,
-        today: date
+    let btnSalir = document.getElementById("cancelar");
+
+      btnSalir.onclick = salir;
+
+      function salir(){
+        window.location.href = "/admin/usuarios";
       }
-      postNewUser(user);
-    });
-    //Post usuario creado
-    function postNewUser(datos) {
-      xhr = new XMLHttpRequest();
-      xhr.open('POST', usersURL);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('x-access-token', sessionStorage.getItem("token"));
-      xhr.send(JSON.stringify(datos));
-      xhr.onload = function () {
-        if (xhr.status != 200) {
-          alert(xhr.status + ': ' + xhr.statusText + ' ' + xhr.responseText);
-        } else {
-          window.location.href = "/admin/usuarios";
+        var info = {};
+
+        let formularioUsuarios = document.getElementById("formularioUsuarios");
+        //console.log(formularioProductos);
+        let btnSaveUser = document.getElementById("saveUser");
+
+        btnSaveUser.disabled = true;
+
+            var nombre = document.getElementById("name");
+
+            var apellido = document.getElementById("apellido");
+
+            var password = document.getElementById("password");
+
+            var email = document.getElementById("email");
+
+            var position = document.getElementById("position");
+
+            var urlImagen = document.getElementById("url");
+
+            formularioUsuarios.addEventListener("change", () => {
+
+            
+
+            //console.log("--------");
+
+            if(nombre.value.length == 0) nombre.classList.add("is-invalid");
+            else{
+                nombre.classList.remove("is-invalid");
+                nombre.classList.add("is-valid");
+                //datos.push(nombre.value);
+            } 
+
+            if(apellido.value == 0){
+               apellido.classList.add("is-invalid");
+            }
+            else{
+               apellido.classList.remove("is-invalid");
+               apellido.classList.add("is-valid");
+                //datos.push(precio.value);
+            }
+
+            if(password.value == 0){
+              password.classList.add("is-invalid");
+            }
+            else{
+              password.classList.remove("is-invalid");
+              password.classList.add("is-valid");
+                //datos.push(cantidad.value);
+            }
+
+            if(email.value.length == 0) email.classList.add("is-invalid");
+            else{
+               email.classList.remove("is-invalid");
+               email.classList.add("is-valid");
+                //datos.push(unidad.value);
+            }
+
+            if(urlImagen.value.length == 0) urlImagen.classList.add("is-invalid");
+            else{
+                urlImagen.classList.remove("is-invalid");
+                urlImagen.classList.add("is-valid");
+                //datos.push(unidad.value);
+            }
+
+            //console.log(datos);
+
+            //console.log("--------");
+
+            //console.log(btnSaveUser.disabled);
+            
+            
+            if(nombre.value.length == 0 || apellido.value.length == 0 || password.value == 0 || email.value == 0 || urlImagen.value.length == 0){
+                console.log("entre");
+                btnSaveUser.disabled = true;
+            }else{
+              btnSaveUser.disabled = false;                
+              console.log("entre else");
+            }
+
+            console.log(btnSaveUser.disabled);
+      })
+
+
+
+
+      btnSaveUser.addEventListener("click", (e) => {
+        e.preventDefault();
+        info.name = nombre.value;
+        info.apellido = apellido.value;
+        info.password = password.value;
+        info.email = email.value;
+        info.type = position.value;
+        info.url_image = urlImagen.value;
+
+        console.log(info);
+        
+        var url = '/api/users';
+        var data = info;
+
+        fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers:{
+            'Content-Type': 'application/json',
+            'x-access-token': sessionStorage.getItem("token")
         }
-      };
-    }
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response =>{
+            console.log('Success:', response);
+            alert("Se añadió un nuevo usuario");
+            window.location.href = "/admin/usuarios";
+        });
+
+
+
+
+        })
+    
   </script>
 </body>
 
