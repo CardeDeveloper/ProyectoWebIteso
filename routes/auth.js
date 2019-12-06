@@ -15,8 +15,10 @@ router.post('/', function(req,res,next){
             next(err);
         }else{
             if(!userInfo){
+                
                 res.status(401).json({status: "error", message: "Invalid email/password", data: null});
                 next();
+                return
             }
             if(bcrypt.compareSync(req.body.password, userInfo.password)){
                 const token = jwt.sign({id: userInfo._id, type: userInfo.type}, req.app.get('secretKey'), {expiresIn: '10h'});
