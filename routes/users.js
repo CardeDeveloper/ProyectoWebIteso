@@ -57,7 +57,6 @@ router.put('/:id',middlewares.validateAdmin, function(req, res, next){
   userModel.updateOne({_id:req.params.id}, {
       name: req.body.name, 
       email: req.body.email,
-      password: req.body.password,
       url_image: req.body.url_image,
       type: req.body.type
     }, function(err, userInfo){
