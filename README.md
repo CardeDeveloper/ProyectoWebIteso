@@ -47,7 +47,10 @@ Contributors names and contact info
  [@Jlsraa](https://github.com/Jlsraa)
 
 ## Version History
-
+* 1.0
+    * First version working with views
+    * EJS was addes as Template engine
+    * Fixed Absolute routes
 * 0.3
     * Backend added
 * 0.2
