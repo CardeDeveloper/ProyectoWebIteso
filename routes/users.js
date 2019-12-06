@@ -4,6 +4,7 @@ const userModel = require('../models/user');
 const middlewares = require('../middlewares')
 
 router.use(middlewares.validateUser)
+router.use(middlewares.validateAdmin)
 
 router.get('/:id',middlewares.validateAdmin, function(req, res, next) {
   userModel.findOne({_id:req.params.id}, function(err, user){
