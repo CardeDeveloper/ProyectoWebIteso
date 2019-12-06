@@ -11,6 +11,7 @@ router.post('/', function(req,res,next){
     }
     userModel.findOne({email:req.body.email}, function(err, userInfo){
         if(err){
+            res.status(503).json({status: "error", message: "error in db"});
             next(err);
         }else{
             if(!userInfo){
