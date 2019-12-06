@@ -191,7 +191,7 @@
                               <p class="card-text">
                               <b>Nombre:</b>${users.name}<br>
                               <b>Creado el día:</b>${d.getDay() + "-" + d.getMonth() + "-" + d.getFullYear()}<br>
-                              <b>Email: </b>hPiza@gmail.com </p>
+                              <b>Email: </b>${users.email}</p>
                               <a href = "/admin/usuarios/editar?id=${users._id}" class="btn btn-warning">Editar Usuario<i class="fa fa-edit"></i></a>
                               <button data-target="#exampleModalLong" data-toggle="modal" id ="EliminarUsuario" onclick="eliminarUsuario(${"'"+users._id+"'"},${"'"+users.name+"'"})" class="btn btn-danger">Eliminar Usuario</button>
                             </div>
